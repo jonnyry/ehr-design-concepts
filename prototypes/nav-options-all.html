@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EHR navigation options</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Public Sans", Arial, sans-serif;
+    background: #f3f2f1;
+    color: #0b0c0c;
+    padding: 40px 20px;
+    line-height: 1.5;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .intro { color: #505a5f; font-size: 16px; margin-bottom: 24px; }
+
+  .toc {
+    background: #fff;
+    border: 1px solid #b1b4b6;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+  .toc h3 {
+    font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em;
+    font-weight: 700; color: #505a5f; margin-bottom: 12px;
+  }
+  .toc ul { list-style: none; columns: 2; column-gap: 30px; }
+  .toc li { padding: 4px 0; font-size: 15px; }
+  .toc a { color: #1d70b8; text-decoration: underline; text-underline-offset: 3px; }
+  .toc a:hover { text-decoration-thickness: 3px; }
+
+  .legend {
+    display: flex; gap: 24px; flex-wrap: wrap;
+    padding: 16px 20px; background: #fff;
+    border: 1px solid #b1b4b6;
+    margin-bottom: 40px;
+    font-size: 14px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .swatch { width: 24px; height: 14px; border: 1px solid rgba(0,0,0,0.1); flex: none; }
+  .sw-chrome { background: #1f3a4d; }
+  .sw-clinic { background: #d2e2f1; border-color: #1d70b8; }
+  .sw-banner { background: #f3f2f1; border-left: 3px solid #185FA5; }
+  .sw-submenu { background: #cce2d8; border-color: #00703c; }
+
+  .group-divider {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 700; color: #505a5f;
+    padding: 24px 0 12px;
+    border-bottom: 2px solid #b1b4b6;
+    margin-bottom: 24px;
+  }
+
+  .option {
+    background: #fff;
+    border: 1px solid #b1b4b6;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .option h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; scroll-margin-top: 20px; }
+  .option .desc { color: #505a5f; font-size: 15px; margin-bottom: 16px; }
+
+  /* Wireframe styles */
+  .wf {
+    background: #fafafa;
+    border: 1px solid #d3d3d3;
+    width: 100%;
+    overflow: hidden;
+    font-family: "Public Sans", Arial, sans-serif;
+    display: flex; flex-direction: column;
+  }
+  .wf-chrome {
+    background: #1f3a4d; color: #fff;
+    padding: 6px 16px; font-size: 13px; font-weight: 500;
+    display: flex; gap: 16px; align-items: center;
+  }
+  .wf-chrome .right { margin-left: auto; opacity: 0.8; font-size: 12px; }
+  .wf-hamburger { display: inline-flex; flex-direction: column; gap: 3px; cursor: pointer; }
+  .wf-hamburger span { display: block; width: 14px; height: 1.5px; background: #fff; }
+  .wf-clinicnav {
+    background: #d2e2f1; color: #0c3e66;
+    padding: 8px 16px; font-size: 13px; font-weight: 500;
+    border-top: 1px solid #1d70b8; border-bottom: 1px solid #1d70b8;
+    display: flex; gap: 22px;
+    overflow-x: auto; white-space: nowrap;
+  }
+  .wf-banner {
+    background: #f3f2f1;
+    border-left: 4px solid #185FA5;
+    border-bottom: 1px solid #d3d3d3;
+    padding: 12px 16px;
+  }
+  .wf-banner-name { font-weight: 700; font-size: 15px; }
+  .wf-banner-meta { font-size: 13px; color: #505a5f; margin-top: 4px; }
+  .wf-submenu {
+    background: #cce2d8; color: #0a4b30;
+    padding: 8px 16px; font-size: 13px; font-weight: 500;
+    border-bottom: 1px solid #009f6b;
+    display: flex; gap: 18px;
+    overflow-x: auto; white-space: nowrap;
+  }
+  .wf-submenu .active { font-weight: 700; }
+  .wf-content {
+    padding: 24px 16px;
+    color: #b1b4b6; text-align: center;
+    font-size: 12px;
+    background: repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(0,0,0,0.02) 8px, rgba(0,0,0,0.02) 16px);
+    flex: 1; min-height: 60px;
+  }
+
+  /* Variant: sub-menu inside banner */
+  .wf-banner.with-submenu { padding-bottom: 0; }
+  .wf-banner-submenu {
+    margin-top: 12px; padding-top: 10px;
+    border-top: 1px solid #d3d3d3;
+    display: flex; gap: 18px; font-size: 13px;
+    overflow-x: auto; white-space: nowrap;
+    padding-bottom: 8px;
+  }
+  .wf-banner-submenu .active { color: #185FA5; font-weight: 700; }
+  .wf-banner-submenu span:not(.active) { color: #505a5f; }
+
+  /* Variant: in-page tabs */
+  .wf-tabs {
+    padding: 12px 16px 0;
+    border-bottom: 1px solid #d3d3d3;
+    display: flex; gap: 18px; font-size: 13px;
+    overflow-x: auto; white-space: nowrap;
+  }
+  .wf-tabs span { padding-bottom: 8px; color: #505a5f; }
+  .wf-tabs .active {
+    color: #185FA5; font-weight: 700;
+    border-bottom: 3px solid #185FA5;
+    margin-bottom: -1px;
+  }
+
+  /* Variant: sidebar in option 4 (patient modules only) */
+  .wf-body { display: flex; flex: 1; min-height: 0; }
+  .wf-sidebar {
+    background: #cce2d8; color: #0a4b30;
+    padding: 12px;
+    font-size: 13px; font-weight: 500;
+    width: 140px; flex: none;
+    display: flex; flex-direction: column; gap: 8px;
+    border-right: 1px solid #009f6b;
+  }
+  .wf-sidebar .active { font-weight: 700; }
+  .wf-sidebar span:not(.active) { color: #5a7a6b; }
+  .wf-body .wf-content { flex: 1; }
+  .wf-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+  /* Variant: patient session tabs */
+  .wf-sessions {
+    background: #e5e3df;
+    border-bottom: 1px solid #d3d3d3;
+    display: flex; font-size: 13px;
+  }
+  .wf-session {
+    padding: 6px 14px;
+    border-right: 1px solid #d3d3d3;
+    display: flex; align-items: center; gap: 6px;
+    color: #505a5f;
+  }
+  .wf-session.active {
+    background: #f3f2f1;
+    border-left: 3px solid #185FA5;
+    color: #0b0c0c; font-weight: 500;
+    padding-left: 11px;
+  }
+  .wf-session .close { color: #888; font-size: 16px; }
+  .wf-session.add { color: #1d70b8; font-weight: 500; }
+
+  /* Side-rail variants (clinic modules in left rail) */
+  .wf-rail {
+    background: #d2e2f1; color: #0c3e66;
+    width: 170px; flex: none;
+    padding: 12px 0;
+    font-size: 13px; font-weight: 500;
+    border-right: 1px solid #1d70b8;
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .wf-rail .item {
+    padding: 7px 16px;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+  }
+  .wf-rail .item.active {
+    background: #b3cce8;
+    border-left-color: #003078;
+    font-weight: 700;
+  }
+  .wf-rail .item.parent {
+    background: #b3cce8;
+    border-left-color: #003078;
+    font-weight: 700;
+  }
+  .wf-rail .sub-item {
+    padding: 5px 16px 5px 30px;
+    font-size: 13px;
+    color: #1d70b8;
+  }
+  .wf-rail .sub-item.active {
+    background: #cce2d8;
+    color: #0a4b30;
+    font-weight: 700;
+  }
+
+  /* Icon rail */
+  .wf-rail-icons {
+    background: #1f3a4d;
+    width: 56px; flex: none;
+    padding: 8px 0;
+    display: flex; flex-direction: column; gap: 2px;
+    border-right: 1px solid #14232f;
+  }
+  .wf-rail-icons .icon {
+    width: 40px; height: 40px;
+    margin: 0 auto;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 4px;
+    color: #b3cce8; font-size: 18px;
+    cursor: pointer;
+  }
+  .wf-rail-icons .icon.active {
+    background: #2d5570; color: #fff;
+  }
+
+  .pros-cons {
+    margin-top: 14px;
+    display: flex; gap: 24px;
+    font-size: 14px; color: #3a3a3a;
+  }
+  .pros-cons > div { flex: 1; }
+  .pros-cons strong { font-weight: 700; }
+
+  .back-to-top {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #1d70b8;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>
+</head>
+<body>
+<div class="container" id="top">
+  <h1>EHR navigation options</h1>
+  <p class="intro">Nine alternative arrangements for the top-level clinic modules and the patient-context sub-menu. Each shows a patient open with the Summary tab active.</p>
+
+  <div class="toc">
+    <h3>Jump to</h3>
+    <ul>
+      <li><a href="#opt1">1. Two horizontal bars</a></li>
+      <li><a href="#opt2">2. Sub-menu inside the banner</a></li>
+      <li><a href="#opt3">3. Sub-menu as in-page tabs</a></li>
+      <li><a href="#opt4">4. Patient sidebar only</a></li>
+      <li><a href="#opt5">5. Module switcher (compact chrome)</a></li>
+      <li><a href="#opt6">6. Tab-style patient sessions</a></li>
+      <li><a href="#opt7">7. Clinic sidebar + horizontal sub-menu</a></li>
+      <li><a href="#opt8">8. Everything in one sidebar</a></li>
+      <li><a href="#opt9">9. Icon rail (collapsed by default)</a></li>
+    </ul>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="swatch sw-chrome"></span> App chrome</div>
+    <div class="legend-item"><span class="swatch sw-clinic"></span> Clinic-mode nav</div>
+    <div class="legend-item"><span class="swatch sw-banner"></span> Patient banner</div>
+    <div class="legend-item"><span class="swatch sw-submenu"></span> Patient sub-menu</div>
+  </div>
+
+  <div class="group-divider">Horizontal layouts</div>
+
+  <!-- 1 -->
+  <div class="option" id="opt1">
+    <h2>1. Two horizontal bars</h2>
+    <p class="desc">Top bar: clinic actions. Patient sub-menu in its own bar beneath the banner. Three horizontal bars stacked when a patient is open.</p>
+    <div class="wf">
+      <div class="wf-chrome">ClearCare EHR <span class="right">MWANGI, A. (Dr) — Nkubu HC · Sign out</span></div>
+      <div class="wf-clinicnav">
+        <span>Find patient</span><span>Register</span><span>Appointments</span><span>Workflow</span><span>Reporting</span><span>System tools</span><span>Config</span>
+      </div>
+      <div class="wf-banner">
+        <div class="wf-banner-name">WANJIRU, Grace (Mrs)</div>
+        <div class="wf-banner-meta">Born 14-Mar-1992 &middot; MRN NKB-0049213</div>
+      </div>
+      <div class="wf-submenu">
+        <span class="active">Summary</span><span>Encounters</span><span>Prescribing</span><span>Labs</span><span>Vaccs</span><span>Documents</span><span>Comms</span><span>Templates</span>
+      </div>
+      <div class="wf-content">main content area</div>
+    </div>
+    <div class="pros-cons">
+      <div><strong>Pros:</strong> Clear visual hierarchy. Each role has its own bar. Predictable location.</div>
+      <div><strong>Cons:</strong> Three pinned bars eat vertical space when a patient is open.</div>
+    </div>
+    <a class="back-to-top" href="#top">↑ Back to top</a>
+  </div>
+
+  <!-- 2 -->
+  <div class="option" id="opt2">
+    <h2>2. Sub-menu inside the banner</h2>
+    <p class="desc">Banner becomes a unified patient-mode block: demographics on top, sub-menu beneath, all visually grouped.</p>
+    <div class="wf">
+      <div class="wf-chrome">ClearCare EHR <span class="right">MWANGI, A. (Dr) — Nkubu HC · Sign out</span></div>
+      <div class="wf-clinicnav">
+        <span>Find patient</span><span>Register</span><span>Appointments</span><span>Workflow</span><span>Reporting</span><span>System tools</span><span>Config</span>
+      </div>
+      <div class="wf-banner with-submenu">
+        <div class="wf-banner-name">WANJIRU, Grace (Mrs)</div>
+        <div class="wf-banner-meta">Born 14-Mar-1992 &middot; MRN NKB-0049213</div>
+        <div class="wf-banner-submenu">
+          <span class="active">Summary</span><span>Encounters</span><span>Prescribing</span><span>Labs</span><span>Vaccs</span><span>Documents</span><span>Comms</span><span>Templates</span>
+        </div>
+      </div>
+      <div class="wf-content">main content area</div>
+    </div>
+    <div class="pros-cons">
+      <div><strong>Pros:</strong> Strong "patient mode" identity. Compact. Everything patient-specific in one block.</div>
+      <div><strong>Cons:</strong> Banner is taller. Less clear separation between demographics and navigation.</div>
+    </div>
+    <a class="back-to-top" href="#top">↑ Back to top</a>
+  </div>
+
+  <!-- 3 -->
+  <div class="option" id="opt3">
+    <h2>3. Sub-menu as in-page tabs</h2>
+    <p class="desc">Banner stays demographics-only. Sub-menu lives in the page content area as underlined tabs (scrolls away with content).</p>
+    <div class="wf">
+      <div class="wf-chrome">ClearCare EHR <span class="right">MWANGI, A. (Dr) — Nkubu HC · Sign out</span></div>
+      <div class="wf-clinicnav">
+        <span>Find patient</span><span>Register</span><span>Appointments</span><span>Workflow</span><span>Reporting</span><span>System tools</span><span>Config</span>
+      </div>
+      <div class="wf-banner">
+        <div class="wf-banner-name">WANJIRU, Grace (Mrs)</div>
+        <div class="wf-banner-meta">Born 14-Mar-1992 &middot; MRN NKB-0049213</div>
+      </div>
+      <div class="wf-tabs">
+        <span class="active">Summary</span><span>Encounters</span><span>Prescribing</span><span>Labs</span><span>Vaccs</span><span>Documents</span><span>Comms</span><span>Templates</span>
+      </div>
+      <div class="wf-content">main content area</div>
+    </div>
+    <div class="pros-cons">
+      <div><strong>Pros:</strong> Minimum pinned chrome. Sub-menu scrolls away naturally. Banner stays focused on identity.</div>
+      <div><strong>Cons:</strong> Sub-menu leaves view when scrolled — clinicians must scroll up to switch.</div>
+    </div>
+    <a class="back-to-top" href="#top">↑ Back to top</a>
+  </div>
+
+  <!-- 4 -->
+  <div class="option" id="opt4">
+    <h2>4. Patient sidebar only</h2>
+    <p class="desc">Top bar stays clinic-only. Patient sub-menu becomes a left rail beneath the banner when a patient is open.</p>
+    <div class="wf">
+      <div class="wf-chrome">ClearCare EHR <span class="right">MWANGI, A. (Dr) — Nkubu HC · Sign out</span></div>
+      <div class="wf-clinicnav">
+        <span>Find patient</span><span>Register</span><span>Appointments</span><span>Workflow</span><span>Reporting</span><span>System tools</span><span>Config</span>
+      </div>
+      <div class="wf-banner">
+        <div class="wf-banner-name">WANJIRU, Grace (Mrs)</div>
+        <div class="wf-banner-meta">Born 14-Mar-1992 &middot; MRN NKB-0049213</div>
+      </div>
+      <div class="wf-body">
+        <div class="wf-sidebar">
+          <span class="active">Summary</span>
+          <span>Encounters</span>
+          <span>Prescribing</span>
+          <span>Labs</span>
+          <span>Vaccs</span>
+          <span>Documents</span>
+          <span>Comms</span>
+          <span>Templates</span>
+        </div>
+        <div class="wf-content">main content area</div>
+      </div>
+    </div>
+    <div class="pros-cons">
+      <div><strong>Pros:</strong> Scales to 12+ patient sub-items. Always visible. Easy to scan vertically.</div>
+      <div><strong>Cons:</strong> Eats horizontal space. Different layout style to other (clinic-mode) screens.</div>
+    </div>
+    <a class="back-to-top" href="#top">↑ Back to top</a>
+  </div>
+
+  <!-- 5 -->
+  <div class="option" id="opt5">
+    <h2>5. Module switcher (compact chrome)</h2>
+    <p class="desc">A "Modules" menu hides the clinic bar. Saves vertical space. Patient sub-menu still appears beneath the banner.</p>
+    <div class="wf">
+      <div class="wf-chrome">
+        <span class="wf-hamburger"><span></span><span></span><span></span></span>
+        Modules
+        <span style="opacity:0.7; margin-left: 14px;">ClearCare EHR</span>
+        <span class="right">MWANGI, A. (Dr) — Nkubu HC · Sign out</span>
+      </div>
+      <div class="wf-banner">
+        <div class="wf-banner-name">WANJIRU, Grace (Mrs)</div>
+        <div class="wf-banner-meta">Born 14-Mar-1992 &middot; MRN NKB-0049213</div>
+      </div>
+      <div class="wf-submenu">
+        <span class="active">Summary</span><span>Encounters</span><span>Prescribing</span><span>Labs</span><span>Vaccs</span><span>Documents</span><span>Comms</span><span>Templates</span>
+      </div>
+      <div class="wf-content">main content area (more room)</div>
+    </div>
+    <div class="pros-cons">
+      <div><strong>Pros:</strong> Most compact. Maximum vertical space for content. Scales to many clinic modules.</div>
+      <div><strong>Cons:</strong> Every clinic-mode navigation needs an extra click. Less discoverable.</div>
+    </div>
+    <a class="back-to-top" href="#top">↑ Back to top</a>
+  </div>
+
+  <!-- 6 -->
+  <div class="option" id="opt6">
+    <h2>6. Tab-style patient sessions</h2>
+    <p class="desc">Each open patient is a browser-style tab. Supports keeping multiple patients open during a busy clinic (interruption-friendly).</p>
+    <div class="wf">
+      <div class="wf-chrome">ClearCare EHR <span class="right">MWANGI, A. (Dr) — Nkubu HC · Sign out</span></div>
+      <div class="wf-clinicnav">
+        <span>Find patient</span><span>Register</span><span>Appointments</span><span>Workflow</span><span>Reporting</span><span>System tools</span><span>Config</span>
+      </div>
+      <div class="wf-sessions">
+        <div class="wf-session active">WANJIRU, Grace <span class="close">×</span></div>
+        <div class="wf-session">KIMANI, J. <span class="close">×</span></div>
+        <div class="wf-session add">+ Add patient</div>
+      </div>
+      <div class="wf-banner">
+        <div class="wf-banner-name">WANJIRU, Grace (Mrs)</div>
+        <div class="wf-banner-meta">Born 14-Mar-1992 &middot; MRN NKB-0049213</div>
+      </div>
+      <div class="wf-submenu">
+        <span class="active">Summary</span><span>Encounters</span><span>Prescribing</span><span>Labs</span><span>Vaccs</span><span>Documents</span><span>Comms</span><span>Templates</span>
+      </div>
+      <div class="wf-content">main content area</div>
+    </div>
+    <div class="pros-cons">
+      <div><strong>Pros:</strong> Solves multi-patient workflow. Powerful for interruption-heavy clinics. Familiar pattern.</div>
+      <div><strong>Cons:</strong> Adds another chrome row. Risk of clinical errors from wrong tab being active.</div>
+    </div>
+    <a class="back-to-top" href="#top">↑ Back to top</a>
+  </div>
+
+  <div class="group-divider">Side rail layouts</div>
+
+  <!-- 7 -->
+  <div class="option" id="opt7">
+    <h2>7. Clinic sidebar + horizontal patient sub-menu</h2>
+    <p class="desc">Top chrome stays minimal. Clinic modules go in a left rail. Patient banner spans the work area, with its sub-menu horizontally beneath.</p>
+    <div class="wf">
+      <div class="wf-chrome">ClearCare EHR <span class="right">MWANGI, A. (Dr) — Nkubu HC · Sign out</span></div>
+      <div class="wf-body">
+        <div class="wf-rail">
+          <div class="item active">Find patient</div>
+          <div class="item">Register patient</div>
+          <div class="item">Appointments</div>
+          <div class="item">Workflow</div>
+          <div class="item">Reporting</div>
+          <div class="item">System tools</div>
+          <div class="item">Configuration</div>
+        </div>
+        <div class="wf-main">
+          <div class="wf-banner">
+            <div class="wf-banner-name">WANJIRU, Grace (Mrs)</div>
+            <div class="wf-banner-meta">Born 14-Mar-1992 &middot; MRN NKB-0049213</div>
+          </div>
+          <div class="wf-submenu">
+            <span class="active">Summary</span><span>Encounters</span><span>Prescribing</span><span>Labs</span><span>Vaccs</span><span>Documents</span><span>Comms</span><span>Templates</span>
+          </div>
+          <div class="wf-content">main content area</div>
+        </div>
+      </div>
+    </div>
+    <div class="pros-cons">
+      <div><strong>Pros:</strong> Clinic nav scales to any number of modules. Two clear axes — vertical for clinic, horizontal for patient. Patient context dominates the work area.</div>
+      <div><strong>Cons:</strong> Two navigation patterns to learn. Sidebar takes ~170px permanently.</div>
+    </div>
+    <a class="back-to-top" href="#top">↑ Back to top</a>
+  </div>
+
+  <!-- 8 -->
+  <div class="option" id="opt8">
+    <h2>8. Everything in one sidebar</h2>
+    <p class="desc">Clinic modules in the rail. When a patient is open, the patient sub-modules nest inside the rail as indented children. Single navigation axis.</p>
+    <div class="wf">
+      <div class="wf-chrome">ClearCare EHR <span class="right">MWANGI, A. (Dr) — Nkubu HC · Sign out</span></div>
+      <div class="wf-body">
+        <div class="wf-rail">
+          <div class="item">Find patient</div>
+          <div class="item">Register patient</div>
+          <div class="item parent">Patient record</div>
+          <div class="sub-item active">Summary</div>
+          <div class="sub-item">Encounters</div>
+          <div class="sub-item">Prescribing</div>
+          <div class="sub-item">Labs</div>
+          <div class="sub-item">Vaccs</div>
+          <div class="sub-item">Documents</div>
+          <div class="sub-item">Comms</div>
+          <div class="sub-item">Templates</div>
+          <div class="item">Appointments</div>
+          <div class="item">Workflow</div>
+          <div class="item">Reporting</div>
+          <div class="item">Configuration</div>
+        </div>
+        <div class="wf-main">
+          <div class="wf-banner">
+            <div class="wf-banner-name">WANJIRU, Grace (Mrs)</div>
+            <div class="wf-banner-meta">Born 14-Mar-1992 &middot; MRN NKB-0049213</div>
+          </div>
+          <div class="wf-content">main content area<br><br>(no sub-menu in the content area — it's all in the rail)</div>
+        </div>
+      </div>
+    </div>
+    <div class="pros-cons">
+      <div><strong>Pros:</strong> Single nav axis. Hierarchy is explicit and scannable. Everything reachable from one place.</div>
+      <div><strong>Cons:</strong> Rail gets long when patient is open. Mixing clinic-scope and patient-scope items in one list can feel muddled.</div>
+    </div>
+    <a class="back-to-top" href="#top">↑ Back to top</a>
+  </div>
+
+  <!-- 9 -->
+  <div class="option" id="opt9">
+    <h2>9. Icon rail (collapsed by default, expandable)</h2>
+    <p class="desc">Narrow ~56px rail with icons only. Hover or click to expand to labels. Modern app-shell pattern used by Slack, VS Code, Notion.</p>
+    <div class="wf">
+      <div class="wf-chrome">ClearCare EHR <span class="right">MWANGI, A. (Dr) — Nkubu HC · Sign out</span></div>
+      <div class="wf-body">
+        <div class="wf-rail-icons">
+          <div class="icon active" title="Find patient">⌕</div>
+          <div class="icon" title="Register">＋</div>
+          <div class="icon" title="Appointments">▦</div>
+          <div class="icon" title="Workflow">☰</div>
+          <div class="icon" title="Reporting">▤</div>
+          <div class="icon" title="System tools">⚙</div>
+          <div class="icon" title="Configuration">⚒</div>
+        </div>
+        <div class="wf-main">
+          <div class="wf-banner">
+            <div class="wf-banner-name">WANJIRU, Grace (Mrs)</div>
+            <div class="wf-banner-meta">Born 14-Mar-1992 &middot; MRN NKB-0049213</div>
+          </div>
+          <div class="wf-submenu">
+            <span class="active">Summary</span><span>Encounters</span><span>Prescribing</span><span>Labs</span><span>Vaccs</span><span>Documents</span><span>Comms</span><span>Templates</span>
+          </div>
+          <div class="wf-content">main content area (more room with narrow rail)</div>
+        </div>
+      </div>
+    </div>
+    <div class="pros-cons">
+      <div><strong>Pros:</strong> Most content space of any sidebar option. Modern feel. Scales to many clinic modules.</div>
+      <div><strong>Cons:</strong> Icons ambiguous until learned. Less discoverable. Needs good iconography. Harder for occasional users.</div>
+    </div>
+    <a class="back-to-top" href="#top">↑ Back to top</a>
+  </div>
+
+</div>
+</body>
+</html>
