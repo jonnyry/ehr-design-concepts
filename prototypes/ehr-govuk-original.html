@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient record — ClearCare EHR (original GOV.UK version)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- GDS Transport isn't publicly licensed; using its closest free analogue. -->
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------- GOV.UK-inspired tokens ---------- */
+  :root {
+    --black: #0b0c0c;
+    --text: #0b0c0c;
+    --text-muted: #505a5f;
+    --border: #b1b4b6;
+    --border-light: #f3f2f1;
+    --bg: #ffffff;
+    --bg-grey: #f3f2f1;
+    --blue: #1d70b8;
+    --blue-dark: #003078;
+    --blue-hover: #003078;
+    --green: #00703c;
+    --red: #d4351c;
+    --yellow: #ffdd00;
+    --focus: #ffdd00;
+    --green-button: #00703c;
+    --font: "Public Sans", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    color: var(--text);
+    background: var(--bg);
+    font-size: 19px;
+    line-height: 1.47;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Focus state — yellow underline, GOV.UK signature */
+  a:focus, button:focus, [tabindex]:focus {
+    outline: 3px solid transparent;
+    color: var(--black);
+    background-color: var(--focus);
+    box-shadow: 0 -2px var(--focus), 0 4px var(--black);
+    text-decoration: none;
+  }
+
+  /* ---------- Top black bar (like gov.uk header) ---------- */
+  .gov-header {
+    background: var(--black);
+    color: #fff;
+    border-bottom: 10px solid var(--blue);
+  }
+  .gov-header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 30px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .gov-logo {
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 10px;
+    color: #fff; text-decoration: none;
+  }
+  .gov-logo .crown {
+    display: inline-grid; place-items: center;
+    width: 30px; height: 30px;
+    background: #fff; color: var(--black);
+    font-weight: 700; font-size: 16px;
+  }
+  .gov-header .spacer { flex: 1; }
+  .gov-header .session-info {
+    font-size: 16px; display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+  }
+  .gov-header .session-info span { color: #fff; }
+  .gov-header .session-info a {
+    color: #fff; text-decoration: underline; text-underline-offset: 3px;
+  }
+  .gov-header .session-info a:hover { text-decoration-thickness: 3px; }
+  .session-dot {
+    display: inline-block; width: 10px; height: 10px;
+    background: #00ed64; margin-right: 6px; vertical-align: middle;
+  }
+  .session-dot.sync { background: var(--yellow); }
+
+  /* ---------- Service navigation bar (blue) ---------- */
+  .service-nav {
+    background: var(--blue-dark);
+    color: #fff;
+  }
+  .service-nav-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 30px;
+    display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  }
+  .service-name {
+    font-weight: 700; font-size: 19px;
+    padding: 14px 0; color: #fff;
+  }
+  .service-nav ul {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; gap: 0;
+  }
+  .service-nav li a {
+    display: block; padding: 14px 16px;
+    color: #fff; text-decoration: none; font-size: 16px;
+    border-bottom: 4px solid transparent; margin-bottom: -4px;
+  }
+  .service-nav li a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .service-nav li a.active { border-bottom-color: #fff; font-weight: 700; }
+  .service-nav li a .badge {
+    background: var(--red); color: #fff; padding: 1px 7px;
+    font-size: 14px; font-weight: 700; margin-left: 4px;
+  }
+
+  /* ---------- Main container ---------- */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+  }
+
+  /* ---------- Phase banner ---------- */
+  .phase-banner {
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+    font-size: 16px;
+  }
+  .phase-tag {
+    display: inline-block;
+    background: var(--blue);
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    margin-right: 10px;
+  }
+  .phase-banner a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ---------- Breadcrumbs ---------- */
+  .breadcrumbs {
+    padding: 20px 0 0;
+    font-size: 16px;
+  }
+  .breadcrumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0; }
+  .breadcrumbs li { padding-right: 18px; position: relative; }
+  .breadcrumbs li:not(:last-child)::after {
+    content: ""; position: absolute; right: 4px; top: 50%;
+    width: 7px; height: 7px;
+    border-right: 1px solid var(--text-muted); border-top: 1px solid var(--text-muted);
+    transform: translateY(-50%) rotate(45deg);
+  }
+  .breadcrumbs a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+  .breadcrumbs li:last-child { color: var(--text-muted); }
+
+  /* ---------- Page layout ---------- */
+  .main-content { padding: 30px 0 60px; }
+
+  /* ---------- Patient banner (a clean header block, NOT a card) ---------- */
+  .patient-banner {
+    background: var(--bg-grey);
+    border-left: 10px solid var(--blue);
+    padding: 20px 25px;
+    margin-bottom: 30px;
+  }
+  .patient-banner .name-row {
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  }
+  .patient-banner h1 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .patient-banner .pronouns {
+    font-size: 19px; color: var(--text-muted); font-weight: 400;
+  }
+  .patient-banner .meta-row {
+    margin-top: 10px;
+    display: flex; flex-wrap: wrap; gap: 6px 30px;
+    font-size: 19px;
+  }
+  .patient-banner .meta-row dt {
+    color: var(--text-muted); font-weight: 400; display: inline;
+  }
+  .patient-banner .meta-row dd {
+    margin: 0; display: inline; font-weight: 700;
+  }
+  .patient-banner .meta-row .item {
+    display: flex; gap: 8px;
+  }
+
+  /* warning callouts inside banner */
+  .warnings { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .warning {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 14px;
+    background: #fff;
+    border-left: 5px solid var(--red);
+    font-size: 19px;
+  }
+  .warning.info { border-left-color: var(--blue); }
+  .warning .label {
+    font-weight: 700; text-transform: uppercase; font-size: 14px;
+    letter-spacing: 0.04em; padding-top: 2px; min-width: 90px;
+  }
+  .warning.alert .label { color: var(--red); }
+  .warning.info .label { color: var(--blue-dark); }
+  .warning .text strong { font-weight: 700; }
+
+  /* ---------- Page heading ---------- */
+  .page-heading {
+    display: flex; align-items: baseline; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;
+  }
+  .page-heading .caption {
+    display: block;
+    font-size: 19px; color: var(--text-muted); font-weight: 400;
+    margin-bottom: 5px;
+  }
+  .page-heading h2 {
+    margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  .page-heading .actions { margin-left: auto; display: flex; gap: 10px; flex-wrap: wrap; }
+
+  /* ---------- GDS-style buttons ---------- */
+  .button {
+    display: inline-block;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1;
+    padding: 13px 16px 12px;
+    background: var(--green-button);
+    color: #fff;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 0 #002d18;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .button:hover { background: #005a30; }
+  .button:active { box-shadow: none; transform: translateY(2px); }
+  .button.secondary {
+    background: var(--bg-grey);
+    color: var(--black);
+    box-shadow: 0 2px 0 #929191;
+  }
+  .button.secondary:hover { background: #dbdad9; }
+
+  /* ---------- Two-column layout: main + sidebar (the GOV.UK guidance pattern) ---------- */
+  .columns {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px 60px;
+  }
+  .col-main > section { margin-bottom: 40px; }
+
+  /* ---------- Section heading (h3 with bottom border, GDS pattern) ---------- */
+  .section-heading {
+    font-size: 24px; font-weight: 700; margin: 0 0 15px;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+
+  /* ---------- Summary lists (GDS dl pattern) ---------- */
+  .summary-list {
+    margin: 0; border-top: 1px solid var(--border);
+    font-size: 19px;
+  }
+  .summary-list .sl-row {
+    display: grid;
+    grid-template-columns: 30% 1fr auto;
+    gap: 16px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .summary-list dt {
+    font-weight: 700;
+  }
+  .summary-list dd { margin: 0; }
+  .summary-list .sl-actions {
+    text-align: right;
+  }
+  .summary-list .sl-actions a {
+    color: var(--blue); text-decoration: underline; text-underline-offset: 3px;
+  }
+  .summary-list .sl-actions a:hover { text-decoration-thickness: 3px; }
+
+  /* ---------- Data tables (vitals etc.) ---------- */
+  table.data-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 19px;
+    margin-top: 5px;
+  }
+  table.data-table caption { display: none; }
+  table.data-table th, table.data-table td {
+    text-align: left;
+    padding: 12px 20px 12px 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table.data-table th {
+    font-weight: 700;
+  }
+  table.data-table td.numeric, table.data-table th.numeric {
+    text-align: right; font-variant-numeric: tabular-nums;
+    padding-right: 0;
+  }
+  table.data-table tr:last-child td { border-bottom: 1px solid var(--border); }
+  .value-flag {
+    color: var(--red); font-weight: 700;
+  }
+
+  /* ---------- Tags (status pills, but flat squared GDS-style) ---------- */
+  .tag {
+    display: inline-block;
+    background: var(--blue);
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    line-height: 1.25;
+  }
+  .tag--grey { background: var(--bg-grey); color: var(--text); }
+  .tag--green { background: #cce2d8; color: #005a30; }
+  .tag--yellow { background: #fff7bf; color: #594d00; }
+  .tag--red { background: #f6d7d2; color: #942514; }
+
+  /* ---------- Inset text (GDS pattern) ---------- */
+  .inset-text {
+    padding: 15px; padding-left: 20px;
+    margin: 15px 0;
+    border-left: 10px solid var(--border);
+    font-size: 19px;
+  }
+
+  /* ---------- Sidebar related items ---------- */
+  .col-side h3.section-heading { font-size: 19px; }
+  .related-nav { list-style: none; margin: 0; padding: 0; }
+  .related-nav li { padding: 8px 0; border-bottom: 1px solid var(--border-light); }
+  .related-nav li:last-child { border-bottom: none; }
+  .related-nav a {
+    color: var(--blue); text-decoration: underline; text-underline-offset: 3px;
+    font-size: 19px;
+  }
+  .related-nav a:hover { text-decoration-thickness: 3px; }
+  .related-nav .meta { display: block; color: var(--text-muted); font-size: 16px; }
+
+  /* ---------- Footer ---------- */
+  footer.gov-footer {
+    background: var(--bg-grey);
+    border-top: 1px solid #a1acb2;
+    padding: 25px 0;
+    margin-top: 60px;
+    font-size: 16px;
+    color: var(--text-muted);
+  }
+  footer .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 30px; }
+  footer a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ---------- Tablet ---------- */
+  @media (max-width: 1024px) {
+    body { font-size: 18px; }
+    .columns { grid-template-columns: 1fr; gap: 20px; }
+    .col-side { border-top: 2px solid var(--border); padding-top: 20px; }
+    .patient-banner h1 { font-size: 32px; }
+    .page-heading h2 { font-size: 28px; }
+    .summary-list .sl-row { grid-template-columns: 35% 1fr auto; }
+  }
+
+  /* ---------- Phone ---------- */
+  @media (max-width: 640px) {
+    body { font-size: 16px; line-height: 1.5; }
+    .container, .gov-header-inner, .service-nav-inner, footer .footer-inner { padding: 0 15px; }
+    .gov-header-inner { padding: 10px 15px; }
+
+    .gov-header .session-info { font-size: 14px; gap: 12px; }
+    .service-nav-inner { gap: 0; }
+    .service-name { padding: 12px 0; font-size: 18px; width: 100%; }
+    .service-nav ul {
+      width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      flex-wrap: nowrap; border-top: 1px solid rgba(255,255,255,0.3);
+    }
+    .service-nav li a { white-space: nowrap; padding: 12px 12px; font-size: 15px; }
+
+    .patient-banner { padding: 16px; border-left-width: 6px; margin-bottom: 22px; }
+    .patient-banner h1 { font-size: 26px; }
+    .patient-banner .pronouns { font-size: 17px; }
+    .patient-banner .meta-row { font-size: 17px; gap: 4px 20px; }
+    .warning { font-size: 17px; flex-direction: column; gap: 4px; padding: 10px 12px; }
+    .warning .label { padding-top: 0; }
+
+    .page-heading h2 { font-size: 24px; }
+    .page-heading .actions { width: 100%; margin-left: 0; }
+    .page-heading .actions .button { flex: 1; text-align: center; }
+
+    .section-heading { font-size: 20px; }
+    .summary-list { font-size: 17px; }
+    .summary-list .sl-row {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .summary-list .sl-actions { text-align: left; }
+
+    table.data-table { font-size: 17px; }
+    table.data-table th, table.data-table td { padding: 10px 12px 10px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== GOV-style black header ========== -->
+<header class="gov-header" role="banner">
+  <div class="gov-header-inner">
+    <a class="gov-logo" href="#">
+      <span class="crown">+</span> ClearCare EHR
+    </a>
+    <div class="spacer"></div>
+    <div class="session-info">
+      <span><span class="session-dot"></span>Online</span>
+      <span><span class="session-dot sync"></span>12 records pending sync</span>
+      <span>Dr A. Mwangi — Nkubu Health Centre</span>
+      <a href="#">Sign out</a>
+    </div>
+  </div>
+</header>
+
+<!-- ========== Service / module navigation ========== -->
+<nav class="service-nav" role="navigation" aria-label="Service">
+  <div class="service-nav-inner">
+    <span class="service-name">Patient record</span>
+    <ul>
+      <li><a href="#" class="active">Summary</a></li>
+      <li><a href="#">Encounters</a></li>
+      <li><a href="#">Prescribing</a></li>
+      <li><a href="#">Laboratory <span class="badge">3</span></a></li>
+      <li><a href="#">Vitals</a></li>
+      <li><a href="#">Documents</a></li>
+      <li><a href="#">Clinic queue <span class="badge">8</span></a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- Phase banner: signals this is a beta service -->
+  <div class="phase-banner">
+    <span class="phase-tag">Beta</span>
+    This is a new service — your <a href="#">feedback</a> will help us improve it.
+  </div>
+
+  <!-- Breadcrumbs -->
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="#">Clinic queue</a></li>
+      <li><a href="#">Patients</a></li>
+      <li>Grace Wanjiru</li>
+    </ol>
+  </nav>
+
+  <main class="main-content" id="main-content">
+
+    <!-- ===== Patient banner ===== -->
+    <section class="patient-banner" aria-labelledby="patient-name">
+      <div class="name-row">
+        <h1 id="patient-name">Grace Wanjiru</h1>
+        <span class="pronouns">she/her</span>
+      </div>
+      <dl class="meta-row">
+        <div class="item"><dt>Date of birth:</dt><dd>14 March 1992 (34 years)</dd></div>
+        <div class="item"><dt>NHS no:</dt><dd>NKB-0049213</dd></div>
+        <div class="item"><dt>Sex:</dt><dd>Female</dd></div>
+        <div class="item"><dt>Phone:</dt><dd>+254 712 ••• •89</dd></div>
+      </dl>
+
+      <div class="warnings">
+        <div class="warning alert">
+          <span class="label">Allergy</span>
+          <span class="text"><strong>Penicillin</strong> — severe reaction (urticaria, swelling). Confirmed 2023.</span>
+        </div>
+        <div class="warning info">
+          <span class="label">Pregnant</span>
+          <span class="text"><strong>28 weeks</strong>, gravida 3 para 2. Estimated delivery date 18 August 2026.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Page heading ===== -->
+    <div class="page-heading">
+      <div>
+        <span class="caption">Patient record</span>
+        <h2>Summary</h2>
+      </div>
+      <div class="actions">
+        <button class="button secondary" type="button">Print summary</button>
+        <button class="button" type="button">Start new encounter</button>
+      </div>
+    </div>
+
+    <!-- ===== Two-column layout ===== -->
+    <div class="columns">
+
+      <div class="col-main">
+
+        <!-- Problems -->
+        <section>
+          <h3 class="section-heading">Active problems</h3>
+          <dl class="summary-list">
+            <div class="sl-row">
+              <dt>Type 2 diabetes mellitus</dt>
+              <dd>ICD-10: E11 · Diagnosed 2023 <br>
+                <span class="tag tag--yellow">Active</span></dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+            <div class="sl-row">
+              <dt>Hypertension</dt>
+              <dd>ICD-10: I10 · Diagnosed 2024 <br>
+                <span class="tag tag--yellow">Active</span></dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+            <div class="sl-row">
+              <dt>Antenatal care — G3 P2</dt>
+              <dd>Estimated delivery 18 August 2026 <br>
+                <span class="tag tag--green">Monitored</span></dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- Medications -->
+        <section>
+          <h3 class="section-heading">Current medication</h3>
+          <dl class="summary-list">
+            <div class="sl-row">
+              <dt>Metformin 500&nbsp;mg</dt>
+              <dd>1 tablet, twice daily, oral. Since January 2026.</dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+            <div class="sl-row">
+              <dt>Methyldopa 250&nbsp;mg</dt>
+              <dd>1 tablet, three times daily, oral. Since April 2026.</dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+            <div class="sl-row">
+              <dt>Ferrous sulphate + folic acid</dt>
+              <dd>1 tablet once daily, oral. Antenatal supplementation.</dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- Latest vitals -->
+        <section>
+          <h3 class="section-heading">Latest vitals</h3>
+          <p style="margin:0 0 10px; color: var(--text-muted);">Recorded 18 May 2026 by Dr A. Mwangi.</p>
+          <table class="data-table">
+            <caption>Latest vitals</caption>
+            <thead>
+              <tr>
+                <th scope="col">Measurement</th>
+                <th scope="col" class="numeric">Value</th>
+                <th scope="col" class="numeric">Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Blood pressure</th>
+                <td class="numeric"><span class="value-flag">148 / 94 mmHg</span></td>
+                <td class="numeric">&lt; 140 / 90</td>
+              </tr>
+              <tr>
+                <th scope="row">Pulse</th>
+                <td class="numeric">82 bpm</td>
+                <td class="numeric">60–100</td>
+              </tr>
+              <tr>
+                <th scope="row">Temperature</th>
+                <td class="numeric">36.8 °C</td>
+                <td class="numeric">36.1–37.2</td>
+              </tr>
+              <tr>
+                <th scope="row">Oxygen saturation</th>
+                <td class="numeric">98 %</td>
+                <td class="numeric">≥ 95</td>
+              </tr>
+              <tr>
+                <th scope="row">Weight</th>
+                <td class="numeric">71.2 kg</td>
+                <td class="numeric">—</td>
+              </tr>
+              <tr>
+                <th scope="row">BMI</th>
+                <td class="numeric">26.1</td>
+                <td class="numeric">18.5–24.9</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="inset-text">
+            Blood pressure has been elevated at the last two visits. Continue methyldopa and review at next antenatal appointment.
+          </div>
+        </section>
+
+      </div><!-- /col-main -->
+
+      <aside class="col-side" aria-label="Related">
+
+        <section>
+          <h3 class="section-heading">Recent encounters</h3>
+          <ul class="related-nav">
+            <li>
+              <a href="#">Antenatal review</a>
+              <span class="meta">18 May 2026 · Dr A. Mwangi</span>
+            </li>
+            <li>
+              <a href="#">Diabetes follow-up</a>
+              <span class="meta">2 April 2026 · Sr J. Otieno</span>
+            </li>
+            <li>
+              <a href="#">Antenatal booking visit</a>
+              <span class="meta">10 March 2026 · Dr A. Mwangi</span>
+            </li>
+            <li>
+              <a href="#">Routine review</a>
+              <span class="meta">14 January 2026 · Dr A. Mwangi</span>
+            </li>
+          </ul>
+        </section>
+
+        <section style="margin-top:30px;">
+          <h3 class="section-heading">Allergies and intolerances</h3>
+          <ul class="related-nav">
+            <li>
+              <strong>Penicillin</strong>
+              <span class="meta">Severe · confirmed 2023</span>
+            </li>
+            <li style="color: var(--text-muted);">
+              No other allergies recorded.
+            </li>
+          </ul>
+        </section>
+
+        <section style="margin-top:30px;">
+          <h3 class="section-heading">Outstanding tasks</h3>
+          <ul class="related-nav">
+            <li><a href="#">Review FBC result</a><span class="meta">Ordered 18 May</span></li>
+            <li><a href="#">Review HbA1c result</a><span class="meta">Ordered 18 May</span></li>
+            <li><a href="#">Sign off antenatal note</a><span class="meta">Draft from 18 May</span></li>
+          </ul>
+        </section>
+
+      </aside>
+
+    </div>
+  </main>
+</div>
+
+<footer class="gov-footer">
+  <div class="footer-inner">
+    ClearCare EHR · Open-source patient record for low-resource clinics ·
+    <a href="#">Help</a> · <a href="#">Accessibility</a> · <a href="#">Privacy</a>
+  </div>
+</footer>
+
+</body>
+</html>
