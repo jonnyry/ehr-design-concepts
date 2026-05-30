@@ -123,8 +123,9 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
+    scrollbar-width: none;
   }
+  .service-nav ul::-webkit-scrollbar { display: none; }
   .service-nav li { flex: none; }
   .service-nav li a {
     display: block; padding: 11px 16px;
@@ -182,28 +183,34 @@
   .breadcrumbs li:last-child { color: var(--text-muted); }
 
   /* ---------- Page layout ---------- */
-  .main-content { padding: 30px 0 60px; }
+  .main-content { padding: 0 0 60px; }
 
-  /* ---------- Patient module tabs (in-page sub-nav) ---------- */
+  /* ---------- Patient module tabs (full-width band, not sticky) ---------- */
   .patient-tabs {
+    background: #fff;
     border-bottom: 1px solid var(--border);
-    margin-bottom: 30px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  }
+  .patient-tabs-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
   }
   .patient-tabs ul {
     list-style: none; margin: 0; padding: 0;
-    display: flex; gap: 0;
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     white-space: nowrap;
+    scrollbar-width: none;
   }
+  .patient-tabs ul::-webkit-scrollbar { display: none; }
   .patient-tabs li { flex: none; }
   .patient-tabs li a {
     display: inline-block;
-    padding: 14px 18px;
+    padding: 12px 16px;
     color: var(--blue);
     text-decoration: none;
-    font-size: 17px;
-    font-weight: 400;
+    font-size: 16px;
     border-bottom: 4px solid transparent;
     margin-bottom: -1px;
   }
@@ -219,8 +226,8 @@
   .patient-tabs li a .badge {
     background: var(--red); color: #fff;
     padding: 1px 7px;
-    font-size: 14px; font-weight: 700;
-    margin-left: 6px;
+    font-size: 13px; font-weight: 700;
+    margin-left: 4px;
   }
 
   /* ---------- Patient banner (sticky, collapsible, full-width band) ---------- */
@@ -329,7 +336,9 @@
 
   /* ---------- Page heading ---------- */
   .page-heading {
-    display: flex; align-items: baseline; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;
+    display: flex; align-items: baseline; gap: 20px;
+    margin-top: 30px; margin-bottom: 30px;
+    flex-wrap: wrap;
   }
   .page-heading .caption {
     display: block;
@@ -493,7 +502,7 @@
   /* ---------- Phone ---------- */
   @media (max-width: 640px) {
     body { font-size: 16px; line-height: 1.5; }
-    .container, .gov-header-inner, .service-nav-inner, .patient-banner-inner, footer .footer-inner { padding: 0 15px; }
+    .container, .gov-header-inner, .service-nav-inner, .patient-banner-inner, .patient-tabs-inner, footer .footer-inner { padding: 0 15px; }
     .gov-header-inner { padding: 8px 15px; }
 
     .gov-header .session-info { font-size: 14px; gap: 12px; }
@@ -626,23 +635,25 @@
   </div>
 </section>
 
+<!-- ===== Patient module tabs (full-width band, scrolls away) ===== -->
+<nav class="patient-tabs" aria-label="Patient record sections">
+  <div class="patient-tabs-inner">
+    <ul>
+      <li><a href="#" class="active">Summary</a></li>
+      <li><a href="#">Encounters</a></li>
+      <li><a href="#">Prescribing</a></li>
+      <li><a href="#">Labs <span class="badge">3</span></a></li>
+      <li><a href="#">Vaccinations</a></li>
+      <li><a href="#">Documents</a></li>
+      <li><a href="#">Comms</a></li>
+      <li><a href="#">Templates</a></li>
+    </ul>
+  </div>
+</nav>
+
 <div class="container">
 
   <main class="main-content" id="main-content">
-
-    <!-- ===== Patient module tabs (in-page, scrolls with content) ===== -->
-    <nav class="patient-tabs" aria-label="Patient record sections">
-      <ul>
-        <li><a href="#" class="active">Summary</a></li>
-        <li><a href="#">Encounters</a></li>
-        <li><a href="#">Prescribing</a></li>
-        <li><a href="#">Labs <span class="badge">3</span></a></li>
-        <li><a href="#">Vaccinations</a></li>
-        <li><a href="#">Documents</a></li>
-        <li><a href="#">Comms</a></li>
-        <li><a href="#">Templates</a></li>
-      </ul>
-    </nav>
 
     <!-- ===== Page heading ===== -->
     <div class="page-heading">
