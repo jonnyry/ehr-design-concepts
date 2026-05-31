@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register patient — Option 5 (no patient in context)</title>
+<title>Find patient (modal, no patient context) — Option 5</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- GDS Transport isn't publicly licensed; using its closest free analogue. -->
@@ -718,10 +718,12 @@
     margin: 30px auto;
     box-shadow: 0 16px 48px rgba(0,0,0,0.25);
     font-family: var(--font);
-    display: flex;
-    flex-direction: column;
     overflow: hidden;
     resize: both;
+  }
+  dialog.find-modal[open] {
+    display: flex;
+    flex-direction: column;
   }
   dialog.find-modal::backdrop {
     background: rgba(11, 12, 12, 0.55);
@@ -1260,7 +1262,7 @@
   })();
 </script>
 <!-- ===== Find Patient modal (native <dialog>) ===== -->
-<dialog class="find-modal" id="findPatientModal" aria-labelledby="findPatientTitle">
+<dialog class="find-modal" id="findPatientModal" aria-labelledby="findPatientTitle" open>
   <div class="find-modal__head">
     <h2 class="find-modal__title" id="findPatientTitle">Find patient</h2>
     <button type="button" class="find-modal__close" aria-label="Close" onclick="document.getElementById('findPatientModal').close()">
@@ -1360,6 +1362,19 @@
     </div>
   </div>
 </dialog>
+
+
+<script>
+  // Open the Find Patient modal on load so the mockup shows it open.
+  // In a real implementation this would be triggered by a button click.
+  (function () {
+    var d = document.getElementById('findPatientModal');
+    if (d && typeof d.showModal === 'function') {
+      d.removeAttribute('open');
+      d.showModal();
+    }
+  })();
+</script>
 
 </body>
 </html>
