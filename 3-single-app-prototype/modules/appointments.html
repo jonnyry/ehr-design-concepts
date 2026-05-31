@@ -1,0 +1,146 @@
+<div class="page-heading">
+  <div><span class="caption">Clinic — Monday 31 May 2026</span><h2>Appointments</h2></div>
+  <div class="actions">
+    <button class="button secondary" type="button">Print list</button>
+    <button class="button" type="button">New appointment</button>
+  </div>
+</div>
+
+<div style="margin-bottom:20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+  <button type="button" class="chip chip--active">Today</button>
+  <button type="button" class="chip">This week</button>
+  <span style="margin-left:8px;display:flex;align-items:center;gap:8px;font-size:16px;color:var(--text-muted)">
+    Clinician:
+    <select style="font:inherit;font-size:16px;padding:4px 8px;border:1px solid var(--border);background:#fff">
+      <option>All clinicians</option>
+      <option>MWANGI, A. (Dr)</option>
+      <option>OTIENO, J. (Sr)</option>
+      <option>KARIUKI, P. (Nurse)</option>
+    </select>
+  </span>
+</div>
+
+<table class="data-table">
+  <caption>Today's appointments</caption>
+  <thead>
+    <tr>
+      <th scope="col">Time</th>
+      <th scope="col">Patient</th>
+      <th scope="col">MRN</th>
+      <th scope="col">Type</th>
+      <th scope="col">Clinician</th>
+      <th scope="col">Status</th>
+      <th scope="col" aria-label="Actions"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="mono">08:00</td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="NKB-0052104">MURIITHI, Samuel</a></td>
+      <td class="mono" style="font-size:14px">NKB-0052104</td>
+      <td>Hypertension review</td>
+      <td>MWANGI, A. (Dr)</td>
+      <td><span class="tag tag--green">Completed</span></td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline">Details</a></td>
+    </tr>
+    <tr>
+      <td class="mono">08:20</td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="NKB-0044381">GITONGA, Alice</a></td>
+      <td class="mono" style="font-size:14px">NKB-0044381</td>
+      <td>Antenatal review</td>
+      <td>MWANGI, A. (Dr)</td>
+      <td><span class="tag tag--green">Completed</span></td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline">Details</a></td>
+    </tr>
+    <tr>
+      <td class="mono">08:40</td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="NKB-0036847">NKUROI, David</a></td>
+      <td class="mono" style="font-size:14px">NKB-0036847</td>
+      <td>Diabetes &amp; hypertension</td>
+      <td>OTIENO, J. (Sr)</td>
+      <td><span class="tag tag--red">DNA</span></td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline">Details</a></td>
+    </tr>
+    <tr>
+      <td class="mono">09:00</td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="NKB-0058012">KARIMI, Esther</a></td>
+      <td class="mono" style="font-size:14px">NKB-0058012</td>
+      <td>General consultation</td>
+      <td>KARIUKI, P. (Nurse)</td>
+      <td><span class="tag">In progress</span></td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline">Details</a></td>
+    </tr>
+    <tr>
+      <td class="mono">09:20</td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="NKB-0038104">WANJIKU, Mary</a></td>
+      <td class="mono" style="font-size:14px">NKB-0038104</td>
+      <td>Diabetes follow-up</td>
+      <td>OTIENO, J. (Sr)</td>
+      <td><span class="tag tag--yellow">Waiting</span></td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline">Details</a></td>
+    </tr>
+    <tr>
+      <td class="mono">09:40</td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="NKB-0033219">MWENDA, Joseph</a></td>
+      <td class="mono" style="font-size:14px">NKB-0033219</td>
+      <td>Annual review</td>
+      <td>MWANGI, A. (Dr)</td>
+      <td><span class="tag tag--grey">Booked</span></td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline">Details</a></td>
+    </tr>
+    <tr style="color:var(--text-muted)">
+      <td class="mono">10:00</td>
+      <td>(Walk-in slot)</td>
+      <td></td>
+      <td>—</td>
+      <td>—</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="mono">10:20</td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="NKB-0022143">MUTHEE, Rose</a></td>
+      <td class="mono" style="font-size:14px">NKB-0022143</td>
+      <td>Routine review</td>
+      <td>KARIUKI, P. (Nurse)</td>
+      <td><span class="tag tag--grey">Booked</span></td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline">Details</a></td>
+    </tr>
+    <tr>
+      <td class="mono">10:40</td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="NKB-0041923">WANJALA, Peter</a></td>
+      <td class="mono" style="font-size:14px">NKB-0041923</td>
+      <td>Hypertension follow-up</td>
+      <td>MWANGI, A. (Dr)</td>
+      <td><span class="tag tag--grey">Booked</span></td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline">Details</a></td>
+    </tr>
+    <tr style="color:var(--text-muted)">
+      <td class="mono">11:00</td>
+      <td>(Slot free)</td>
+      <td></td>
+      <td>—</td>
+      <td>—</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="mono">11:20</td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="NKB-0029740">WANJIRU, Faith</a></td>
+      <td class="mono" style="font-size:14px">NKB-0029740</td>
+      <td>Child health check</td>
+      <td>KARIUKI, P. (Nurse)</td>
+      <td><span class="tag tag--grey">Booked</span></td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline">Details</a></td>
+    </tr>
+    <tr>
+      <td class="mono">11:40</td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="NKB-0049213">WANJIRU, Grace</a></td>
+      <td class="mono" style="font-size:14px">NKB-0049213</td>
+      <td>Antenatal — blood results</td>
+      <td>MWANGI, A. (Dr)</td>
+      <td><span class="tag tag--grey">Booked</span></td>
+      <td><a href="#" style="color:var(--blue);text-decoration:underline">Details</a></td>
+    </tr>
+  </tbody>
+</table>

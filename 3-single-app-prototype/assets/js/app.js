@@ -133,6 +133,39 @@ document.addEventListener('click', function (e) {
   }
 });
 
+// Lightweight data binder for HTML template fragments.
+// data-if="key"   — hides element when data[key] is falsy or an empty array
+// data-field="key" — sets element innerHTML to data[key]
+// data-list="key"  — clones the <template> child for each item in data[key],
+//                    recursively binding each clone; shows [data-empty] when empty
+function bind(root, data) {
+  root.querySelectorAll('[data-if]').forEach(function (el) {
+    var v = data[el.dataset.if];
+    el.hidden = !v || (Array.isArray(v) && !v.length);
+  });
+  root.querySelectorAll('[data-field]').forEach(function (el) {
+    var v = data[el.dataset.field];
+    if (v != null) el.innerHTML = v;
+  });
+  root.querySelectorAll('[data-list]').forEach(function (container) {
+    var items = data[container.dataset.list] || [];
+    var tmpl  = container.querySelector('template');
+    var empty = container.querySelector('[data-empty]');
+    if (!tmpl) return;
+    Array.from(container.children).forEach(function (child) {
+      if (child.tagName !== 'TEMPLATE' && !child.hasAttribute('data-empty')) {
+        container.removeChild(child);
+      }
+    });
+    if (empty) empty.hidden = !!items.length;
+    items.forEach(function (item) {
+      var frag = document.importNode(tmpl.content, true);
+      bind(frag, item);
+      container.appendChild(frag);
+    });
+  });
+}
+
 // ── App state & patient loading ───────────────────────────────────────────────
 // Requires an HTTP server (file:// won't work in Chrome due to fetch restrictions).
 // To run locally: python -m http.server 8080  or use VS Code Live Server.
@@ -153,8 +186,8 @@ var app = {
     'register-patient': 'Register patient', reporting: 'Reporting', inbox: 'Inbox',
   };
 
-  // Routes that clear patient context when visited
-  var CLINIC_ROUTES = { appointments: 1, tasks: 1, 'register-patient': 1, reporting: 1, inbox: 1 };
+  var PATIENT_ROUTES = { summary: 1, encounters: 1, prescribing: 1, labs: 1, vaccinations: 1, documents: 1, comms: 1, templates: 1 };
+  var CLINIC_ROUTES  = { appointments: 1, tasks: 1, 'register-patient': 1, reporting: 1, inbox: 1 };
 
   // ── Router ──────────────────────────────────────────────────────────────────
 
@@ -164,8 +197,7 @@ var app = {
 
   function navigate(route) {
     var isClinic = !!CLINIC_ROUTES[route];
-    if (!window.render || !window.render[route]) route = isClinic ? route : 'summary';
-    if (!window.render || !window.render[route]) route = 'summary';
+    if (!PATIENT_ROUTES[route] && !isClinic) route = 'summary';
 
     document.querySelectorAll('.patient-submenu a[data-route]').forEach(function (a) {
       a.classList.toggle('active', a.dataset.route === route);
@@ -189,8 +221,22 @@ var app = {
       main.innerHTML = '<p style="padding:60px 0;text-align:center;color:var(--text-muted)">Search for a patient to begin.</p>';
       return;
     }
-    main.innerHTML = window.render[route](patient);
-    window.scrollTo(0, 0);
+
+    fetch('modules/' + route + '.html')
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      })
+      .then(function (html) {
+        main.innerHTML = html;
+        if (patient && window.prepareData && window.prepareData[route]) {
+          bind(main, window.prepareData[route](patient));
+        }
+        window.scrollTo(0, 0);
+      })
+      .catch(function () {
+        main.innerHTML = '<p style="padding:30px 0;color:var(--text-muted)">Module not available.</p>';
+      });
   }
 
   window.navigate = navigate;

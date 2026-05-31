@@ -1,43 +1,23 @@
 <div class="page-heading">
-  <div>
-    <span class="caption">Patient record</span>
-    <h2>Vaccinations</h2>
-  </div>
-  <div class="actions">
-    <button class="button" type="button">Record vaccination</button>
-  </div>
+  <div><span class="caption">Patient record</span><h2>Vaccinations</h2></div>
+  <div class="actions"><button class="button" type="button">Record vaccination</button></div>
+</div>
+
+<div class="inset-text" data-if="isPregnant">
+  Patient is currently pregnant. Review antenatal vaccination schedule.
 </div>
 
 <section>
-  <h3 class="section-heading">Antenatal vaccinations</h3>
-  <div class="inset-text">
-    Patient is currently 28 weeks pregnant (G3 P2, EDD 18-Aug-2026). Review antenatal vaccination schedule.
-  </div>
-  <dl class="summary-list">
-    <div class="sl-row">
-      <dt>Tetanus toxoid (TT)</dt>
-      <dd>
-        Dose 3 of 5 given — 10-Mar-2026 · MWANGI, A. (Dr)<br>
-        <span class="tag tag--green">Up to date</span>
-      </dd>
-      <dd class="sl-actions"><a href="#">History</a></dd>
-    </div>
-    <div class="sl-row">
-      <dt>Influenza (inactivated)</dt>
-      <dd>
-        Recommended in pregnancy — not yet given this season<br>
-        <span class="tag tag--yellow">Due</span>
-      </dd>
-      <dd class="sl-actions"><a href="#">Record</a></dd>
-    </div>
-    <div class="sl-row">
-      <dt>COVID-19 booster</dt>
-      <dd>
-        Last dose 14-Oct-2024<br>
-        <span class="tag tag--green">Up to date</span>
-      </dd>
-      <dd class="sl-actions"><a href="#">History</a></dd>
-    </div>
+  <h3 class="section-heading">Vaccination status</h3>
+  <dl class="summary-list" data-list="schedule">
+    <template>
+      <div class="sl-row">
+        <dt data-field="name"></dt>
+        <dd><span data-field="doseInfo"></span><br><span data-field="statusTag"></span></dd>
+        <dd class="sl-actions"><a href="#" data-field="actionLabel"></a></dd>
+      </div>
+    </template>
+    <div data-empty hidden style="padding:15px 0;color:var(--text-muted)">No vaccination schedule recorded.</div>
   </dl>
 </section>
 
@@ -54,48 +34,18 @@
         <th scope="col">Recorded by</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <th scope="row">Tetanus toxoid (TT)</th>
-        <td>Dose 3</td>
-        <td>10-Mar-2026</td>
-        <td>TT-2024-NKB</td>
-        <td>MWANGI, A. (Dr)</td>
-      </tr>
-      <tr>
-        <th scope="row">COVID-19 (bivalent booster)</th>
-        <td>Booster 2</td>
-        <td>14-Oct-2024</td>
-        <td>BNT-COV-044</td>
-        <td>KARIUKI, P. (Nurse)</td>
-      </tr>
-      <tr>
-        <th scope="row">Tetanus toxoid (TT)</th>
-        <td>Dose 2</td>
-        <td>20-Jun-2022</td>
-        <td>TT-2022-NKB</td>
-        <td>OTIENO, J. (Sr)</td>
-      </tr>
-      <tr>
-        <th scope="row">Tetanus toxoid (TT)</th>
-        <td>Dose 1</td>
-        <td>04-Feb-2022</td>
-        <td>TT-2021-NKB</td>
-        <td>OTIENO, J. (Sr)</td>
-      </tr>
-      <tr>
-        <th scope="row">COVID-19 (primary)</th>
-        <td>Dose 2</td>
-        <td>11-Sep-2021</td>
-        <td>AZ-COV-211</td>
-        <td>KARIUKI, P. (Nurse)</td>
-      </tr>
-      <tr>
-        <th scope="row">COVID-19 (primary)</th>
-        <td>Dose 1</td>
-        <td>14-Aug-2021</td>
-        <td>AZ-COV-209</td>
-        <td>KARIUKI, P. (Nurse)</td>
+    <tbody data-list="history">
+      <template>
+        <tr>
+          <th scope="row" data-field="vaccine"></th>
+          <td data-field="dose"></td>
+          <td data-field="date"></td>
+          <td class="mono" style="font-size:14px" data-field="batch"></td>
+          <td data-field="by"></td>
+        </tr>
+      </template>
+      <tr data-empty hidden>
+        <td colspan="5" style="color:var(--text-muted);padding:20px 0">No vaccinations recorded.</td>
       </tr>
     </tbody>
   </table>
