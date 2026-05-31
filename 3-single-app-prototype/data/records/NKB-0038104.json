@@ -1,0 +1,67 @@
+{
+  "mrn": "NKB-0038104",
+  "surname": "WANJIKU",
+  "forename": "Mary",
+  "title": "Ms",
+  "dob": "1978-07-22",
+  "sex": "F",
+  "flags": [
+    { "type": "info", "label": "Diabetes", "title": "Type 2 diabetes" }
+  ],
+  "contact": {
+    "phone": "+254 720 123 442",
+    "altPhone": null,
+    "address": "P.O. Box 18, Meru Town, Meru County, Kenya",
+    "nextOfKin": "WANJIKU, K. (Mr) · brother · +254 720 456 001"
+  },
+  "demographics": {
+    "bloodGroup": "A Rh+",
+    "maritalStatus": "Single",
+    "occupation": "Trader",
+    "languages": "Kiswahili, Kimeru"
+  },
+  "clinicalAlerts": [
+    "Type 2 diabetes — HbA1c 8.1% (last tested 03-May-2026)."
+  ],
+  "problems": [
+    { "name": "Type 2 diabetes mellitus", "code": "ICD-10: E11", "detail": "Diagnosed 2019", "status": "active" }
+  ],
+  "medications": {
+    "current": [
+      { "name": "Metformin 500 mg", "dose": "1 tablet twice daily, oral", "since": "2019-06-01", "prescribedBy": "OTIENO, J. (Sr)", "indication": null },
+      { "name": "Glibenclamide 5 mg", "dose": "1 tablet once daily with breakfast, oral", "since": "2023-01-15", "prescribedBy": "OTIENO, J. (Sr)", "indication": null }
+    ],
+    "stopped": []
+  },
+  "allergies": [],
+  "prescribingCautions": [
+    { "label": "Type 2 diabetes", "detail": "Monitor blood glucose with any corticosteroid" }
+  ],
+  "vitals": {
+    "date": "2026-05-03",
+    "recordedBy": "KARIUKI, P. (Nurse)",
+    "measurements": [
+      { "name": "Blood pressure",    "value": "122 / 78 mmHg", "reference": "< 140 / 90", "flag": false },
+      { "name": "Pulse",             "value": "76 bpm",         "reference": "60–100",      "flag": false },
+      { "name": "Weight",            "value": "68.4 kg",        "reference": "—",           "flag": false },
+      { "name": "BMI",               "value": "27.3",           "reference": "18.5–24.9",   "flag": true  },
+      { "name": "Random blood glucose","value": "11.2 mmol/L",  "reference": "< 11.1",      "flag": true  }
+    ],
+    "note": null
+  },
+  "encounters": [
+    { "date": "2026-05-03", "type": "Diabetes follow-up", "clinician": "OTIENO, J. (Sr)", "notes": "HbA1c 8.1%. Blood glucose poorly controlled. Glibenclamide dose reviewed. Dietary counselling repeated.", "status": "signed" },
+    { "date": "2025-11-10", "type": "Diabetes follow-up", "clinician": "OTIENO, J. (Sr)", "notes": "HbA1c 7.6%. Some improvement. Continue current regimen.", "status": "signed" }
+  ],
+  "labs": {
+    "pending": [],
+    "history": [
+      { "name": "HbA1c",              "result": "8.1%",      "reference": "< 7.0%",  "date": "2026-05-03", "orderedBy": "OTIENO, J." },
+      { "name": "Random blood glucose","result": "11.2 mmol/L","reference": "< 11.1", "date": "2026-05-03", "orderedBy": "OTIENO, J." },
+      { "name": "HbA1c",              "result": "7.6%",      "reference": "< 7.0%",  "date": "2025-11-10", "orderedBy": "OTIENO, J." }
+    ]
+  },
+  "vaccinations": { "schedule": [], "history": [] },
+  "documents": [],
+  "comms": { "referrals": [], "messages": [], "contacts": [] }
+}

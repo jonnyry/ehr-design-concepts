@@ -1,0 +1,53 @@
+{
+  "mrn": "NKB-0041923",
+  "surname": "WANJALA",
+  "forename": "Peter",
+  "title": "Mr",
+  "dob": "1965-11-09",
+  "sex": "M",
+  "flags": [],
+  "contact": {
+    "phone": "+254 733 456 011",
+    "altPhone": null,
+    "address": "P.O. Box 5, Nkubu Town, Meru County, Kenya",
+    "nextOfKin": "WANJALA, C. (Mrs) · wife · +254 733 456 099"
+  },
+  "demographics": {
+    "bloodGroup": "B Rh+",
+    "maritalStatus": "Married",
+    "occupation": "Farmer",
+    "languages": "Kiswahili, Kimeru"
+  },
+  "clinicalAlerts": [
+    "Hypertension — last BP 162/98 (21-Apr-2026). On treatment."
+  ],
+  "problems": [
+    { "name": "Essential hypertension", "code": "ICD-10: I10", "detail": "Diagnosed 2021", "status": "active" }
+  ],
+  "medications": {
+    "current": [
+      { "name": "Amlodipine 5 mg", "dose": "1 tablet once daily, oral", "since": "2021-03-08", "prescribedBy": "MWANGI, A. (Dr)", "indication": null }
+    ],
+    "stopped": []
+  },
+  "allergies": [],
+  "prescribingCautions": [],
+  "vitals": {
+    "date": "2026-04-21",
+    "recordedBy": "KARIUKI, P. (Nurse)",
+    "measurements": [
+      { "name": "Blood pressure", "value": "162 / 98 mmHg", "reference": "< 140 / 90", "flag": true  },
+      { "name": "Pulse",          "value": "88 bpm",         "reference": "60–100",      "flag": false },
+      { "name": "Weight",         "value": "79.1 kg",        "reference": "—",           "flag": false }
+    ],
+    "note": "BP poorly controlled. Adherence discussed. Consider dose increase at next visit."
+  },
+  "encounters": [
+    { "date": "2026-04-21", "type": "Hypertension review", "clinician": "MWANGI, A. (Dr)", "notes": "BP 162/98. Medication adherence poor — supply ran out 2 weeks ago. Prescription renewed. Lifestyle advice.", "status": "signed" },
+    { "date": "2025-10-14", "type": "Hypertension review", "clinician": "MWANGI, A. (Dr)", "notes": "BP 148/92. Partial control. Amlodipine continued.", "status": "signed" }
+  ],
+  "labs": { "pending": [], "history": [] },
+  "vaccinations": { "schedule": [], "history": [] },
+  "documents": [],
+  "comms": { "referrals": [], "messages": [], "contacts": [] }
+}

@@ -90,6 +90,23 @@ document.addEventListener('click', function (e) {
     if (modal) modal.close();
   }
 
+  if (action === 'open-patient') {
+    e.preventDefault();
+    var mrn = el.dataset.mrn;
+    document.getElementById('findPatientModal').close();
+    window.loadPatient(mrn);
+  }
+
+  if (action === 'find-filter') {
+    e.preventDefault();
+    document.querySelectorAll('.chip[data-action="find-filter"]').forEach(function (c) {
+      c.classList.remove('chip--active');
+    });
+    el.classList.add('chip--active');
+    app.state.filter = el.dataset.filter || 'all';
+    window.refreshFindResults();
+  }
+
   if (action === 'banner-toggle') {
     var banner = document.getElementById('patientBanner');
     var details = document.getElementById('pbDetails');
@@ -104,68 +121,130 @@ document.addEventListener('click', function (e) {
   }
 });
 
-// Hash router — fetches module fragments into #main-content.
+// ── App state & patient loading ───────────────────────────────────────────────
 // Requires an HTTP server (file:// won't work in Chrome due to fetch restrictions).
 // To run locally: python -m http.server 8080  or use VS Code Live Server.
+var app = {
+  state: {
+    patient:  null,   // currently loaded patient record object
+    patients: [],     // directory loaded from patients.json
+    filter:   'all',  // active chip filter in Find modal
+  }
+};
+
 (function () {
-  var routes = {
-    'summary':      'modules/summary.html',
-    'encounters':   'modules/encounters.html',
-    'prescribing':  'modules/prescribing.html',
-    'labs':         'modules/labs.html',
-    'vaccinations': 'modules/vaccinations.html',
-    'documents':    'modules/documents.html',
-    'comms':        'modules/comms.html',
-    'templates':    'modules/templates.html',
+  var TITLES = {
+    summary: 'Summary', encounters: 'Encounters', prescribing: 'Prescribing',
+    labs: 'Labs', vaccinations: 'Vaccinations', documents: 'Documents',
+    comms: 'Comms', templates: 'Templates',
   };
 
-  var titles = {
-    'summary':      'Summary',
-    'encounters':   'Encounters',
-    'prescribing':  'Prescribing',
-    'labs':         'Labs',
-    'vaccinations': 'Vaccinations',
-    'documents':    'Documents',
-    'comms':        'Comms',
-    'templates':    'Templates',
-  };
+  // ── Router ──────────────────────────────────────────────────────────────────
 
   function currentRoute() {
     return window.location.hash.replace(/^#\//, '') || 'summary';
   }
 
   function navigate(route) {
-    if (!routes[route]) route = 'summary';
+    if (!window.render || !window.render[route]) route = 'summary';
 
-    // Update sub-menu active state immediately
     document.querySelectorAll('.patient-submenu a[data-route]').forEach(function (a) {
       a.classList.toggle('active', a.dataset.route === route);
     });
 
-    // Update page title
-    document.title = (titles[route] || route) + ' — WANJIRU, Grace — ClearCare EHR';
+    var patient = app.state.patient;
+    var label = patient ? patient.surname + ', ' + patient.forename : 'ClearCare EHR';
+    document.title = (TITLES[route] || route) + ' — ' + label + ' — ClearCare EHR';
 
-    fetch(routes[route])
-      .then(function (r) {
-        if (!r.ok) throw new Error(r.status);
-        return r.text();
-      })
-      .then(function (html) {
-        var main = document.getElementById('main-content');
-        main.innerHTML = html;
-        main.scrollTop = 0;
-        window.scrollTo(0, 0);
+    var main = document.getElementById('main-content');
+    if (!patient && route !== 'templates') {
+      main.innerHTML = '<p style="padding:60px 0;text-align:center;color:var(--text-muted)">Search for a patient to begin.</p>';
+      return;
+    }
+    main.innerHTML = window.render[route](patient);
+    window.scrollTo(0, 0);
+  }
+
+  window.navigate = navigate;
+
+  window.addEventListener('hashchange', function () { navigate(currentRoute()); });
+
+  // ── Patient loading ─────────────────────────────────────────────────────────
+
+  function loadPatient(mrn) {
+    fetch('data/records/' + mrn + '.json')
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (data) {
+        app.state.patient = data;
+        window.renderBanner(data);
+        var route = currentRoute();
+        if (route === 'summary' || !window.render[route]) {
+          // already on summary — re-render content
+          navigate('summary');
+        } else {
+          window.location.hash = '#/summary';
+        }
       })
       .catch(function () {
         document.getElementById('main-content').innerHTML =
-          '<p style="padding:30px 0;color:var(--text-muted)">Module not available.</p>';
+          '<p style="padding:30px 0;color:var(--text-muted)">Could not load patient record.</p>';
       });
   }
 
-  window.addEventListener('hashchange', function () {
-    navigate(currentRoute());
-  });
+  window.loadPatient = loadPatient;
 
-  // Load the initial route on page load
-  navigate(currentRoute());
+  // ── Find Patient search ─────────────────────────────────────────────────────
+
+  function filterPatients(q) {
+    var all = app.state.patients;
+    var f = app.state.filter;
+
+    var list = all;
+    if (f === 'recent') {
+      list = all.slice().sort(function (a, b) { return b.lastSeen.localeCompare(a.lastSeen); }).slice(0, 5);
+    }
+    if (!q) return list;
+    q = q.toLowerCase();
+    return list.filter(function (p) {
+      return (p.surname + ' ' + p.forename).toLowerCase().indexOf(q) !== -1 ||
+             p.mrn.toLowerCase().indexOf(q) !== -1 ||
+             (p.phone || '').replace(/\s/g, '').indexOf(q.replace(/\s/g, '')) !== -1 ||
+             p.dob.indexOf(q) !== -1;
+    });
+  }
+
+  function refreshFindResults() {
+    var q       = (document.getElementById('findSearchInput') || {}).value || '';
+    var results = filterPatients(q.trim());
+    var tbody   = document.querySelector('.find-results__table tbody');
+    var meta    = document.querySelector('.find-results__meta span:first-child');
+    var currentMrn = app.state.patient ? app.state.patient.mrn : null;
+
+    if (tbody) tbody.innerHTML = window.renderFindResults(results, currentMrn);
+    if (meta) {
+      meta.innerHTML = '<strong>' + results.length + '</strong> ' +
+        (q.trim() ? 'matching &ldquo;' + q.trim() + '&rdquo;' : 'patients');
+    }
+  }
+
+  // Wire search input
+  var searchInput = document.getElementById('findSearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', refreshFindResults);
+  }
+
+  // Chip filter clicks (handled via event delegation below — see data-action="find-filter")
+  window.refreshFindResults = refreshFindResults;
+
+  // Load the patients directory once
+  fetch('data/patients.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      app.state.patients = data;
+      refreshFindResults();
+    });
+
+  // ── Auto-load default patient (Grace Wanjiru) ───────────────────────────────
+  loadPatient('NKB-0049213');
+
 })();

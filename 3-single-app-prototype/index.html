@@ -96,18 +96,15 @@
 <section class="patient-banner" id="patientBanner" aria-labelledby="patient-name">
   <div class="patient-banner-inner">
 
-    <!-- Single-line summary row, always visible -->
+    <!-- Single-line summary row — populated by renderBanner() in render.js -->
     <div class="pb-summary">
-      <h1 id="patient-name" class="pb-name">WANJIRU, Grace <span class="pb-title">(Mrs)</span></h1>
+      <h1 id="patient-name" class="pb-name"><span data-field="pb-name"></span> <span class="pb-title" data-field="pb-title"></span></h1>
       <dl class="pb-inline">
-        <div class="item"><dt>Born</dt><dd>14-Mar-1992 <span class="pb-age">(34 yrs)</span></dd></div>
-        <div class="item"><dt>MRN</dt><dd>NKB-0049213</dd></div>
-        <div class="item"><dt>Sex</dt><dd>Female</dd></div>
+        <div class="item"><dt>Born</dt><dd><span data-field="pb-dob"></span> <span class="pb-age" data-field="pb-age"></span></dd></div>
+        <div class="item"><dt>MRN</dt><dd data-field="pb-mrn"></dd></div>
+        <div class="item"><dt>Sex</dt><dd data-field="pb-sex"></dd></div>
       </dl>
-      <div class="pb-flags">
-        <span class="pb-flag pb-flag--alert" title="Penicillin allergy">⚠ Allergy</span>
-        <span class="pb-flag pb-flag--info" title="Pregnant, 28 weeks">● Pregnant</span>
-      </div>
+      <div class="pb-flags" data-field="pb-flags"></div>
       <button type="button" class="pb-toggle" aria-expanded="false" aria-controls="pbDetails" data-action="banner-toggle">
         <span class="pb-toggle-label">More</span>
         <svg class="pb-toggle-chev" aria-hidden="true" width="10" height="6" viewBox="0 0 10 6" fill="none">
@@ -116,36 +113,9 @@
       </button>
     </div>
 
-    <!-- Expanded detail panel -->
+    <!-- Expanded detail panel — populated by renderBanner() in render.js -->
     <div class="pb-details" id="pbDetails" hidden>
-      <div class="pb-details-grid">
-        <div class="pb-detail-block">
-          <h3 class="pb-detail-heading">Contact</h3>
-          <dl class="pb-stacked">
-            <div><dt>Phone</dt><dd>+254 712 345 689</dd></div>
-            <div><dt>Alt. phone</dt><dd>+254 720 998 102 (husband)</dd></div>
-            <div><dt>Address</dt><dd>P.O. Box 42, Nkubu Town<br>Meru County, Kenya</dd></div>
-            <div><dt>Next of kin</dt><dd>MUTHOMI, J. (Mr) · husband · +254 720 998 102</dd></div>
-          </dl>
-        </div>
-        <div class="pb-detail-block">
-          <h3 class="pb-detail-heading">Demographics</h3>
-          <dl class="pb-stacked">
-            <div><dt>Blood group</dt><dd>O Rh+</dd></div>
-            <div><dt>Marital status</dt><dd>Married</dd></div>
-            <div><dt>Occupation</dt><dd>Schoolteacher</dd></div>
-            <div><dt>Preferred language</dt><dd>English, Kiswahili</dd></div>
-          </dl>
-        </div>
-        <div class="pb-detail-block">
-          <h3 class="pb-detail-heading">Clinical alerts</h3>
-          <ul class="pb-alerts">
-            <li><strong>Penicillin allergy</strong> — severe (urticaria, swelling). Confirmed 2023.</li>
-            <li><strong>Pregnant — 28 weeks</strong>, G3 P2. EDD 18-Aug-2026.</li>
-            <li>Last seen: 18-May-2026 — antenatal review.</li>
-          </ul>
-        </div>
-      </div>
+      <div class="pb-details-grid" data-field="pb-details-grid"></div>
     </div>
 
   </div>
@@ -203,20 +173,16 @@
         <input type="search" id="findSearchInput" class="find-search__input" placeholder="e.g. Wanjiru, NKB-0049213, +254..." autofocus>
       </div>
       <div class="find-search__chips" role="group" aria-label="Quick filters">
-        <button type="button" class="chip chip--active">All patients</button>
-        <button type="button" class="chip">Recent</button>
-        <button type="button" class="chip">My patients</button>
-        <button type="button" class="chip">Today's appointments</button>
-        <button type="button" class="chip chip--icon">
-          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 4h12M3 7h8M5 10h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-          More filters
-        </button>
+        <button type="button" class="chip chip--active" data-action="find-filter" data-filter="all">All patients</button>
+        <button type="button" class="chip" data-action="find-filter" data-filter="recent">Recent</button>
+        <button type="button" class="chip" data-action="find-filter" data-filter="my">My patients</button>
+        <button type="button" class="chip" data-action="find-filter" data-filter="today">Today's appointments</button>
       </div>
     </div>
 
     <div class="find-results">
       <div class="find-results__meta">
-        <span><strong>4</strong> patients matching "wanj"</span>
+        <span><strong>0</strong> patients</span>
         <span class="find-results__sort">
           Sorted by: <a href="#">Last seen ↓</a>
         </span>
@@ -234,42 +200,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="find-results__row find-results__row--highlight">
-            <th scope="row"><strong>WANJIRU, Grace</strong> <span class="muted">(Mrs)</span></th>
-            <td class="mono">NKB-0049213</td>
-            <td class="mono">14-Mar-1992</td>
-            <td>F</td>
-            <td class="mono">+254 712 ••• •89</td>
-            <td>18-May-2026</td>
-            <td><a href="#" class="row-action">Open record</a></td>
-          </tr>
-          <tr class="find-results__row">
-            <th scope="row">WANJIKU, Mary</th>
-            <td class="mono">NKB-0038104</td>
-            <td class="mono">22-Jul-1978</td>
-            <td>F</td>
-            <td class="mono">+254 720 ••• •42</td>
-            <td>03-May-2026</td>
-            <td><a href="#" class="row-action">Open record</a></td>
-          </tr>
-          <tr class="find-results__row">
-            <th scope="row">WANJALA, Peter</th>
-            <td class="mono">NKB-0041923</td>
-            <td class="mono">09-Nov-1965</td>
-            <td>M</td>
-            <td class="mono">+254 733 ••• •11</td>
-            <td>21-Apr-2026</td>
-            <td><a href="#" class="row-action">Open record</a></td>
-          </tr>
-          <tr class="find-results__row">
-            <th scope="row">WANJIRU, Faith</th>
-            <td class="mono">NKB-0029740</td>
-            <td class="mono">04-Feb-2014</td>
-            <td>F</td>
-            <td class="mono">+254 711 ••• •76</td>
-            <td>15-Jan-2026</td>
-            <td><a href="#" class="row-action">Open record</a></td>
-          </tr>
+          <!-- populated by renderFindResults() in render.js -->
         </tbody>
       </table>
     </div>
@@ -283,6 +214,7 @@
   </div>
 </dialog>
 
+<script src="assets/js/render.js"></script>
 <script src="assets/js/app.js"></script>
 </body>
 </html>

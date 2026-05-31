@@ -1,0 +1,112 @@
+[
+  {
+    "mrn": "NKB-0049213",
+    "surname": "WANJIRU",
+    "forename": "Grace",
+    "title": "Mrs",
+    "dob": "1992-03-14",
+    "sex": "F",
+    "phone": "+254 712 345 689",
+    "lastSeen": "2026-05-18",
+    "flags": ["allergy", "pregnant"]
+  },
+  {
+    "mrn": "NKB-0038104",
+    "surname": "WANJIKU",
+    "forename": "Mary",
+    "title": "Ms",
+    "dob": "1978-07-22",
+    "sex": "F",
+    "phone": "+254 720 123 442",
+    "lastSeen": "2026-05-03",
+    "flags": ["diabetes"]
+  },
+  {
+    "mrn": "NKB-0041923",
+    "surname": "WANJALA",
+    "forename": "Peter",
+    "title": "Mr",
+    "dob": "1965-11-09",
+    "sex": "M",
+    "phone": "+254 733 456 011",
+    "lastSeen": "2026-04-21",
+    "flags": []
+  },
+  {
+    "mrn": "NKB-0029740",
+    "surname": "WANJIRU",
+    "forename": "Faith",
+    "title": "Miss",
+    "dob": "2014-02-04",
+    "sex": "F",
+    "phone": "+254 711 678 976",
+    "lastSeen": "2026-01-15",
+    "flags": []
+  },
+  {
+    "mrn": "NKB-0052104",
+    "surname": "MURIITHI",
+    "forename": "Samuel",
+    "title": "Mr",
+    "dob": "1955-06-17",
+    "sex": "M",
+    "phone": "+254 722 891 033",
+    "lastSeen": "2026-04-28",
+    "flags": ["hypertension"]
+  },
+  {
+    "mrn": "NKB-0044381",
+    "surname": "GITONGA",
+    "forename": "Alice",
+    "title": "Mrs",
+    "dob": "1988-09-03",
+    "sex": "F",
+    "phone": "+254 714 234 567",
+    "lastSeen": "2026-05-10",
+    "flags": ["pregnant"]
+  },
+  {
+    "mrn": "NKB-0033219",
+    "surname": "MWENDA",
+    "forename": "Joseph",
+    "title": "Mr",
+    "dob": "1979-01-22",
+    "sex": "M",
+    "phone": "+254 725 345 678",
+    "lastSeen": "2026-03-05",
+    "flags": []
+  },
+  {
+    "mrn": "NKB-0058012",
+    "surname": "KARIMI",
+    "forename": "Esther",
+    "title": "Miss",
+    "dob": "2001-12-11",
+    "sex": "F",
+    "phone": "+254 716 456 789",
+    "lastSeen": "2026-05-22",
+    "flags": []
+  },
+  {
+    "mrn": "NKB-0036847",
+    "surname": "NKUROI",
+    "forename": "David",
+    "title": "Mr",
+    "dob": "1970-08-30",
+    "sex": "M",
+    "phone": "+254 729 567 890",
+    "lastSeen": "2026-04-08",
+    "flags": ["diabetes", "hypertension"]
+  },
+  {
+    "mrn": "NKB-0022143",
+    "surname": "MUTHEE",
+    "forename": "Rose",
+    "title": "Mrs",
+    "dob": "1962-04-14",
+    "sex": "F",
+    "phone": "+254 723 678 901",
+    "lastSeen": "2026-02-12",
+    "flags": []
+  }
+]

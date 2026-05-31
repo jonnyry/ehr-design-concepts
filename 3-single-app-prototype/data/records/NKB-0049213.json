@@ -1,0 +1,126 @@
+{
+  "mrn": "NKB-0049213",
+  "surname": "WANJIRU",
+  "forename": "Grace",
+  "title": "Mrs",
+  "dob": "1992-03-14",
+  "sex": "F",
+  "flags": [
+    { "type": "alert", "label": "Allergy", "title": "Penicillin allergy" },
+    { "type": "info",  "label": "Pregnant", "title": "Pregnant, 28 weeks" }
+  ],
+  "contact": {
+    "phone": "+254 712 345 689",
+    "altPhone": "+254 720 998 102 (husband)",
+    "address": "P.O. Box 42, Nkubu Town, Meru County, Kenya",
+    "nextOfKin": "MUTHOMI, J. (Mr) · husband · +254 720 998 102"
+  },
+  "demographics": {
+    "bloodGroup": "O Rh+",
+    "maritalStatus": "Married",
+    "occupation": "Schoolteacher",
+    "languages": "English, Kiswahili"
+  },
+  "clinicalAlerts": [
+    "Penicillin allergy — severe (urticaria, swelling). Confirmed 2023.",
+    "Pregnant — 28 weeks, G3 P2. EDD 18-Aug-2026.",
+    "Last seen: 18-May-2026 — antenatal review."
+  ],
+  "problems": [
+    { "name": "Type 2 diabetes mellitus", "code": "ICD-10: E11", "detail": "Diagnosed 2023", "status": "active" },
+    { "name": "Hypertension",             "code": "ICD-10: I10", "detail": "Diagnosed 2024", "status": "active" },
+    { "name": "Antenatal care — G3 P2",   "code": null,          "detail": "Estimated delivery 18-Aug-2026", "status": "monitored" }
+  ],
+  "medications": {
+    "current": [
+      { "name": "Metformin 500 mg",                        "dose": "1 tablet twice daily, oral",       "since": "2026-01-01", "prescribedBy": "MWANGI, A. (Dr)", "indication": null },
+      { "name": "Methyldopa 250 mg",                       "dose": "1 tablet three times daily, oral", "since": "2026-04-03", "prescribedBy": "MWANGI, A. (Dr)", "indication": "Hypertension in pregnancy" },
+      { "name": "Ferrous sulphate 200 mg + folic acid 400 mcg", "dose": "1 tablet once daily, oral",   "since": "2026-03-10", "prescribedBy": "MWANGI, A. (Dr)", "indication": "Antenatal supplementation" }
+    ],
+    "stopped": [
+      { "name": "Amlodipine 5 mg", "stoppedDate": "2026-04-03", "stoppedBy": "MWANGI, A. (Dr)", "reason": "Switched to methyldopa (safer in pregnancy)" }
+    ]
+  },
+  "allergies": [
+    { "substance": "Penicillin", "severity": "Severe", "reaction": "Urticaria and swelling", "confirmed": "2023" }
+  ],
+  "prescribingCautions": [
+    { "label": "Pregnant — 28 weeks", "detail": "Avoid NSAIDs, ACE inhibitors, tetracyclines" },
+    { "label": "Type 2 diabetes",     "detail": "Monitor blood glucose with any corticosteroid" }
+  ],
+  "vitals": {
+    "date": "2026-05-18",
+    "recordedBy": "MWANGI, A. (Dr)",
+    "measurements": [
+      { "name": "Blood pressure",      "value": "148 / 94 mmHg", "reference": "< 140 / 90",  "flag": true  },
+      { "name": "Pulse",               "value": "82 bpm",         "reference": "60–100",       "flag": false },
+      { "name": "Temperature",         "value": "36.8 °C",        "reference": "36.1–37.2",    "flag": false },
+      { "name": "Oxygen saturation",   "value": "98 %",           "reference": "≥ 95",         "flag": false },
+      { "name": "Weight",              "value": "71.2 kg",        "reference": "—",            "flag": false },
+      { "name": "BMI",                 "value": "26.1",           "reference": "18.5–24.9",    "flag": false }
+    ],
+    "note": "Blood pressure has been elevated at the last two visits. Continue methyldopa and review at next antenatal appointment."
+  },
+  "encounters": [
+    { "date": "2026-05-18", "type": "Antenatal review",     "clinician": "MWANGI, A. (Dr)",   "notes": "BP elevated 148/94. Bloods taken. USS at 32 weeks discussed.",            "status": "signed" },
+    { "date": "2026-04-02", "type": "Diabetes follow-up",  "clinician": "OTIENO, J. (Sr)",    "notes": "HbA1c 7.2%. Metformin dose unchanged. Dietary advice given.",             "status": "signed" },
+    { "date": "2026-03-10", "type": "Antenatal booking",   "clinician": "MWANGI, A. (Dr)",   "notes": "G3 P2, 16 weeks. BP 130/82. Methyldopa started. USS booked.",             "status": "signed" },
+    { "date": "2026-01-14", "type": "Annual review",       "clinician": "MWANGI, A. (Dr)",   "notes": "BP 128/80, HbA1c 6.9%. Well controlled. Continue current medications.",   "status": "signed" },
+    { "date": "2025-11-03", "type": "Urgent — unscheduled","clinician": "KARIUKI, P. (Nurse)","notes": "Headache, BP 150/95. Rested and rechecked 138/88. Advised to attend if recurs.", "status": "signed" },
+    { "date": "2025-08-07", "type": "Diabetes follow-up",  "clinician": "OTIENO, J. (Sr)",    "notes": "HbA1c 7.5%. Dietary adherence discussed. Target < 7.0%.",                 "status": "signed" },
+    { "date": "2025-04-15", "type": "Annual review",       "clinician": "MWANGI, A. (Dr)",   "notes": "Diabetes and hypertension review. Eye screening referral placed.",         "status": "signed" }
+  ],
+  "labs": {
+    "pending": [
+      { "name": "Full blood count (FBC)",  "result": "Hb 10.1 g/dL LOW · MCV 72 fL LOW", "orderedDate": "2026-05-18", "resultDate": "2026-05-20" },
+      { "name": "HbA1c",                   "result": "7.8% — above target",                "orderedDate": "2026-05-18", "resultDate": "2026-05-20" },
+      { "name": "Urine protein (dipstick)","result": "2+ protein — abnormal",              "orderedDate": "2026-05-18", "resultDate": "2026-05-18" }
+    ],
+    "history": [
+      { "name": "HbA1c",              "result": "7.2%",                     "reference": "< 7.0%",   "date": "2026-04-02", "orderedBy": "OTIENO, J."  },
+      { "name": "Random blood glucose","result": "8.4 mmol/L",              "reference": "< 11.1",   "date": "2026-04-02", "orderedBy": "OTIENO, J."  },
+      { "name": "FBC — Hb",           "result": "11.8 g/dL",               "reference": "11.5–16.0","date": "2026-03-10", "orderedBy": "MWANGI, A." },
+      { "name": "Blood group & save",  "result": "O Rh+",                   "reference": "—",        "date": "2026-03-10", "orderedBy": "MWANGI, A." },
+      { "name": "HbA1c",              "result": "6.9%",                     "reference": "< 7.0%",   "date": "2026-01-14", "orderedBy": "MWANGI, A." },
+      { "name": "Urea & electrolytes", "result": "Na 138 · K 3.9 · Cr 62", "reference": "Normal",   "date": "2026-01-14", "orderedBy": "MWANGI, A." }
+    ]
+  },
+  "vaccinations": {
+    "schedule": [
+      { "name": "Tetanus toxoid (TT)",    "doseInfo": "Dose 3 of 5 — given 10-Mar-2026",    "status": "up-to-date", "clinician": "MWANGI, A. (Dr)" },
+      { "name": "Influenza (inactivated)","doseInfo": "Recommended in pregnancy — not yet given this season", "status": "due", "clinician": null },
+      { "name": "COVID-19 booster",       "doseInfo": "Last dose 14-Oct-2024",               "status": "up-to-date", "clinician": null }
+    ],
+    "history": [
+      { "vaccine": "Tetanus toxoid (TT)",      "dose": "Dose 3", "date": "2026-03-10", "batch": "TT-2024-NKB",  "by": "MWANGI, A. (Dr)"   },
+      { "vaccine": "COVID-19 (bivalent boost)","dose": "Boost 2","date": "2024-10-14", "batch": "BNT-COV-044",  "by": "KARIUKI, P. (Nurse)" },
+      { "vaccine": "Tetanus toxoid (TT)",      "dose": "Dose 2", "date": "2022-06-20", "batch": "TT-2022-NKB",  "by": "OTIENO, J. (Sr)"    },
+      { "vaccine": "Tetanus toxoid (TT)",      "dose": "Dose 1", "date": "2022-02-04", "batch": "TT-2021-NKB",  "by": "OTIENO, J. (Sr)"    },
+      { "vaccine": "COVID-19 (primary)",       "dose": "Dose 2", "date": "2021-09-11", "batch": "AZ-COV-211",   "by": "KARIUKI, P. (Nurse)" },
+      { "vaccine": "COVID-19 (primary)",       "dose": "Dose 1", "date": "2021-08-14", "batch": "AZ-COV-209",   "by": "KARIUKI, P. (Nurse)" }
+    ]
+  },
+  "documents": [
+    { "name": "Antenatal USS report — 28 weeks",      "type": "Imaging report",    "date": "2026-05-20", "addedBy": "MWANGI, A. (Dr)"   },
+    { "name": "Antenatal USS report — 20 weeks",      "type": "Imaging report",    "date": "2026-04-10", "addedBy": "MWANGI, A. (Dr)"   },
+    { "name": "Diabetic eye screening referral",       "type": "Referral letter",   "date": "2025-04-15", "addedBy": "MWANGI, A. (Dr)"   },
+    { "name": "Diabetic eye screening report",         "type": "Specialist report", "date": "2025-06-02", "addedBy": "KARIUKI, P. (Nurse)" },
+    { "name": "Consent — blood products (patient decision)", "type": "Consent form","date": "2026-03-10", "addedBy": "MWANGI, A. (Dr)"   },
+    { "name": "National ID copy",                      "type": "Identity document", "date": "2026-03-10", "addedBy": "KARIUKI, P. (Nurse)" },
+    { "name": "Allergy confirmation — penicillin",     "type": "Clinical letter",   "date": "2023-09-22", "addedBy": "OTIENO, J. (Sr)"    }
+  ],
+  "comms": {
+    "referrals": [
+      { "name": "Obstetric ultrasound — 32 weeks", "to": "Meru Level 5 Hospital · Radiology",     "sentDate": "2026-05-18", "sentBy": "MWANGI, A. (Dr)", "status": "pending",   "completedDate": null },
+      { "name": "Diabetic eye screening",           "to": "Meru Level 5 Hospital · Ophthalmology", "sentDate": "2025-04-15", "sentBy": "MWANGI, A. (Dr)", "status": "completed", "completedDate": "2025-06-02" }
+    ],
+    "messages": [
+      { "from": "MWANGI, A. (Dr)", "to": "Patient", "date": "2026-05-19", "channel": "SMS", "text": "Your blood results are ready. Please attend the clinic on Wednesday for review. If you feel unwell before then, call us.", "status": "sent" },
+      { "from": "KARIUKI, P. (Nurse)", "to": "Patient", "date": "2026-03-10", "channel": "SMS", "text": "Reminder: your next antenatal appointment is on 02-Apr-2026 at 09:00. Please bring your maternity card.", "status": "sent" }
+    ],
+    "contacts": [
+      { "label": "Meru Level 5 — Radiology",      "phone": "+254 64 310 0001" },
+      { "label": "Meru Level 5 — Ophthalmology",  "phone": "+254 64 310 0044" }
+    ]
+  }
+}
