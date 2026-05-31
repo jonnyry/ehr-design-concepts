@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summary — WANJIRU, Grace — ClearCare EHR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- GDS Transport isn't publicly licensed; using its closest free analogue. -->
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/app.css">
+</head>
+<body>
+
+<!-- ========== GOV-style header ========== -->
+<header class="gov-header" role="banner">
+  <div class="gov-header-inner">
+    <a class="gov-logo" href="#">
+      <span class="crown">+</span> ClearCare EHR
+    </a>
+    <button class="modules-btn" id="modulesBtn" aria-label="Open modules menu" aria-expanded="false" aria-controls="modulesPanel" data-action="modules-toggle">
+      <svg class="modules-btn__icon modules-btn__icon--menu" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true">
+        <path d="M0 1h18M0 7h18M0 13h18" stroke="currentColor" stroke-width="2"/>
+      </svg>
+      <svg class="modules-btn__icon modules-btn__icon--close" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+        <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <span>Modules</span>
+    </button>
+    <nav class="quick-launch" aria-label="Quick actions">
+      <a href="#" title="Find patient" aria-label="Find patient" data-action="find-open">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.5" cy="7.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11.5 11.5L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>Find</span>
+      </a>
+      <a href="#" title="Today's appointments" aria-label="Appointments">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="3" width="16" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M1 7h16M5 1v4M13 1v4" stroke="currentColor" stroke-width="2"/></svg>
+        <span>Today</span>
+      </a>
+      <a href="#" title="My tasks" aria-label="Tasks">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="2" width="14" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 9l3 3 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>Tasks <em class="ql-badge">3</em></span>
+      </a>
+      <a href="#" title="Inbox" aria-label="Inbox">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="3" width="16" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M1 4l8 6 8-6" stroke="currentColor" stroke-width="2"/></svg>
+        <span>Inbox</span>
+      </a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="session-info">
+      <span class="hide-mobile">MWANGI, A. (Dr) — Nkubu HC</span>
+      <a href="#">Sign out</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Modules dropdown panel ===== -->
+<div class="modules-panel" id="modulesPanel" role="region" aria-labelledby="modulesBtn">
+  <div class="modules-panel-inner">
+    <div class="modules-group">
+      <h3 class="modules-group-heading">Patients</h3>
+      <ul>
+        <li><a href="#" data-action="find-open-from-modules">Find patient</a></li>
+        <li><a href="#">Register patient</a></li>
+      </ul>
+    </div>
+    <div class="modules-group">
+      <h3 class="modules-group-heading">Clinic</h3>
+      <ul>
+        <li><a href="#">Appointments</a></li>
+        <li><a href="#">Workflow &amp; tasks <span class="badge">5</span></a></li>
+        <li><a href="#">Reporting</a></li>
+      </ul>
+    </div>
+    <div class="modules-group">
+      <h3 class="modules-group-heading">Administration</h3>
+      <ul>
+        <li><a href="#">Users</a></li>
+        <li><a href="#">Organisations</a></li>
+        <li><a href="#">Locations</a></li>
+        <li><a href="#">Comms links</a></li>
+        <li><a href="#">Coding</a></li>
+      </ul>
+    </div>
+    <div class="modules-group">
+      <h3 class="modules-group-heading">System tools</h3>
+      <ul>
+        <li><a href="#">Audit log</a></li>
+        <li><a href="#">Batch edit</a></li>
+        <li><a href="#">Patient merge</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Patient banner (sticky, collapsible) ===== -->
+<section class="patient-banner" id="patientBanner" aria-labelledby="patient-name">
+  <div class="patient-banner-inner">
+
+    <!-- Single-line summary row, always visible -->
+    <div class="pb-summary">
+      <h1 id="patient-name" class="pb-name">WANJIRU, Grace <span class="pb-title">(Mrs)</span></h1>
+      <dl class="pb-inline">
+        <div class="item"><dt>Born</dt><dd>14-Mar-1992 <span class="pb-age">(34 yrs)</span></dd></div>
+        <div class="item"><dt>MRN</dt><dd>NKB-0049213</dd></div>
+        <div class="item"><dt>Sex</dt><dd>Female</dd></div>
+      </dl>
+      <div class="pb-flags">
+        <span class="pb-flag pb-flag--alert" title="Penicillin allergy">⚠ Allergy</span>
+        <span class="pb-flag pb-flag--info" title="Pregnant, 28 weeks">● Pregnant</span>
+      </div>
+      <button type="button" class="pb-toggle" aria-expanded="false" aria-controls="pbDetails" data-action="banner-toggle">
+        <span class="pb-toggle-label">More</span>
+        <svg class="pb-toggle-chev" aria-hidden="true" width="10" height="6" viewBox="0 0 10 6" fill="none">
+          <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Expanded detail panel -->
+    <div class="pb-details" id="pbDetails" hidden>
+      <div class="pb-details-grid">
+        <div class="pb-detail-block">
+          <h3 class="pb-detail-heading">Contact</h3>
+          <dl class="pb-stacked">
+            <div><dt>Phone</dt><dd>+254 712 345 689</dd></div>
+            <div><dt>Alt. phone</dt><dd>+254 720 998 102 (husband)</dd></div>
+            <div><dt>Address</dt><dd>P.O. Box 42, Nkubu Town<br>Meru County, Kenya</dd></div>
+            <div><dt>Next of kin</dt><dd>MUTHOMI, J. (Mr) · husband · +254 720 998 102</dd></div>
+          </dl>
+        </div>
+        <div class="pb-detail-block">
+          <h3 class="pb-detail-heading">Demographics</h3>
+          <dl class="pb-stacked">
+            <div><dt>Blood group</dt><dd>O Rh+</dd></div>
+            <div><dt>Marital status</dt><dd>Married</dd></div>
+            <div><dt>Occupation</dt><dd>Schoolteacher</dd></div>
+            <div><dt>Preferred language</dt><dd>English, Kiswahili</dd></div>
+          </dl>
+        </div>
+        <div class="pb-detail-block">
+          <h3 class="pb-detail-heading">Clinical alerts</h3>
+          <ul class="pb-alerts">
+            <li><strong>Penicillin allergy</strong> — severe (urticaria, swelling). Confirmed 2023.</li>
+            <li><strong>Pregnant — 28 weeks</strong>, G3 P2. EDD 18-Aug-2026.</li>
+            <li>Last seen: 18-May-2026 — antenatal review.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== Patient sub-menu (sticky, sits beneath banner) ===== -->
+<nav class="patient-submenu" id="patientSubmenu" aria-label="Patient record">
+  <div class="patient-submenu-inner">
+    <ul>
+      <li><a href="#" class="active">Summary</a></li>
+      <li><a href="#">Encounters</a></li>
+      <li><a href="#">Prescribing</a></li>
+      <li><a href="#">Labs <span class="badge">3</span></a></li>
+      <li><a href="#">Vaccinations</a></li>
+      <li><a href="#">Documents</a></li>
+      <li><a href="#">Comms</a></li>
+      <li><a href="#">Templates</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <main class="main-content" id="main-content">
+
+    <!-- ===== Page heading ===== -->
+    <div class="page-heading">
+      <div>
+        <span class="caption">Patient record</span>
+        <h2>Summary</h2>
+      </div>
+      <div class="actions">
+        <button class="button secondary" type="button">Print summary</button>
+        <button class="button" type="button">Start new encounter</button>
+      </div>
+    </div>
+
+    <!-- ===== Two-column layout ===== -->
+    <div class="columns">
+
+      <div class="col-main">
+
+        <!-- Problems -->
+        <section>
+          <h3 class="section-heading">Active problems</h3>
+          <dl class="summary-list">
+            <div class="sl-row">
+              <dt>Type 2 diabetes mellitus</dt>
+              <dd>ICD-10: E11 · Diagnosed 2023 <br>
+                <span class="tag tag--yellow">Active</span></dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+            <div class="sl-row">
+              <dt>Hypertension</dt>
+              <dd>ICD-10: I10 · Diagnosed 2024 <br>
+                <span class="tag tag--yellow">Active</span></dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+            <div class="sl-row">
+              <dt>Antenatal care — G3 P2</dt>
+              <dd>Estimated delivery 18-Aug-2026 <br>
+                <span class="tag tag--green">Monitored</span></dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- Medications -->
+        <section>
+          <h3 class="section-heading">Current medication</h3>
+          <dl class="summary-list">
+            <div class="sl-row">
+              <dt>Metformin 500&nbsp;mg</dt>
+              <dd>1 tablet, twice daily, oral. Since 01-Jan-2026.</dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+            <div class="sl-row">
+              <dt>Methyldopa 250&nbsp;mg</dt>
+              <dd>1 tablet, three times daily, oral. Since 03-Apr-2026.</dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+            <div class="sl-row">
+              <dt>Ferrous sulphate + folic acid</dt>
+              <dd>1 tablet once daily, oral. Antenatal supplementation.</dd>
+              <dd class="sl-actions"><a href="#">Change</a></dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- Latest vitals -->
+        <section>
+          <h3 class="section-heading">Latest vitals</h3>
+          <p style="margin:0 0 10px; color: var(--text-muted);">Recorded 18-May-2026 by MWANGI, A. (Dr).</p>
+          <table class="data-table">
+            <caption>Latest vitals</caption>
+            <thead>
+              <tr>
+                <th scope="col">Measurement</th>
+                <th scope="col" class="numeric">Value</th>
+                <th scope="col" class="numeric">Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Blood pressure</th>
+                <td class="numeric"><span class="value-flag">148 / 94 mmHg</span></td>
+                <td class="numeric">&lt; 140 / 90</td>
+              </tr>
+              <tr>
+                <th scope="row">Pulse</th>
+                <td class="numeric">82 bpm</td>
+                <td class="numeric">60–100</td>
+              </tr>
+              <tr>
+                <th scope="row">Temperature</th>
+                <td class="numeric">36.8 °C</td>
+                <td class="numeric">36.1–37.2</td>
+              </tr>
+              <tr>
+                <th scope="row">Oxygen saturation</th>
+                <td class="numeric">98 %</td>
+                <td class="numeric">≥ 95</td>
+              </tr>
+              <tr>
+                <th scope="row">Weight</th>
+                <td class="numeric">71.2 kg</td>
+                <td class="numeric">—</td>
+              </tr>
+              <tr>
+                <th scope="row">BMI</th>
+                <td class="numeric">26.1</td>
+                <td class="numeric">18.5–24.9</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="inset-text">
+            Blood pressure has been elevated at the last two visits. Continue methyldopa and review at next antenatal appointment.
+          </div>
+        </section>
+
+      </div><!-- /col-main -->
+
+      <aside class="col-side" aria-label="Related">
+
+        <section>
+          <h3 class="section-heading">Recent encounters</h3>
+          <ul class="related-nav">
+            <li>
+              <a href="#">Antenatal review</a>
+              <span class="meta">18-May-2026 · MWANGI, A. (Dr)</span>
+            </li>
+            <li>
+              <a href="#">Diabetes follow-up</a>
+              <span class="meta">02-Apr-2026 · OTIENO, J. (Sr)</span>
+            </li>
+            <li>
+              <a href="#">Antenatal booking visit</a>
+              <span class="meta">10-Mar-2026 · MWANGI, A. (Dr)</span>
+            </li>
+            <li>
+              <a href="#">Routine review</a>
+              <span class="meta">14-Jan-2026 · MWANGI, A. (Dr)</span>
+            </li>
+          </ul>
+        </section>
+
+        <section style="margin-top:30px;">
+          <h3 class="section-heading">Allergies and intolerances</h3>
+          <ul class="related-nav">
+            <li>
+              <strong>Penicillin</strong>
+              <span class="meta">Severe · confirmed 2023</span>
+            </li>
+            <li style="color: var(--text-muted);">
+              No other allergies recorded.
+            </li>
+          </ul>
+        </section>
+
+        <section style="margin-top:30px;">
+          <h3 class="section-heading">Outstanding tasks</h3>
+          <ul class="related-nav">
+            <li><a href="#">Review FBC result</a><span class="meta">Ordered 18-May-2026</span></li>
+            <li><a href="#">Review HbA1c result</a><span class="meta">Ordered 18-May-2026</span></li>
+            <li><a href="#">Sign off antenatal note</a><span class="meta">Draft from 18-May-2026</span></li>
+          </ul>
+        </section>
+
+      </aside>
+
+    </div><!-- /columns -->
+  </main>
+</div>
+
+<footer class="gov-footer">
+  <div class="footer-inner">
+    ClearCare EHR · Open-source patient record for low-resource clinics ·
+    <a href="#">Help</a> · <a href="#">Accessibility</a> · <a href="#">Privacy</a>
+  </div>
+</footer>
+
+<!-- ===== Find Patient modal (native <dialog>) — inlined from partials/find-modal.html ===== -->
+<dialog class="find-modal" id="findPatientModal" aria-labelledby="findPatientTitle">
+  <div class="find-modal__head">
+    <h2 class="find-modal__title" id="findPatientTitle">Find patient</h2>
+    <button type="button" class="find-modal__close" aria-label="Close" data-action="find-close">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M2 2L14 14M14 2L2 14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="find-modal__body">
+    <div class="find-search">
+      <label for="findSearchInput" class="find-search__label">Search by name, MRN, phone or date of birth</label>
+      <div class="find-search__input-wrap">
+        <svg class="find-search__icon" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M13 13l5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="findSearchInput" class="find-search__input" placeholder="e.g. Wanjiru, NKB-0049213, +254..." autofocus>
+      </div>
+      <div class="find-search__chips" role="group" aria-label="Quick filters">
+        <button type="button" class="chip chip--active">All patients</button>
+        <button type="button" class="chip">Recent</button>
+        <button type="button" class="chip">My patients</button>
+        <button type="button" class="chip">Today's appointments</button>
+        <button type="button" class="chip chip--icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 4h12M3 7h8M5 10h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          More filters
+        </button>
+      </div>
+    </div>
+
+    <div class="find-results">
+      <div class="find-results__meta">
+        <span><strong>4</strong> patients matching "wanj"</span>
+        <span class="find-results__sort">
+          Sorted by: <a href="#">Last seen ↓</a>
+        </span>
+      </div>
+      <table class="find-results__table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">MRN</th>
+            <th scope="col">DOB</th>
+            <th scope="col">Sex</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Last seen</th>
+            <th scope="col" aria-label="Actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="find-results__row find-results__row--highlight">
+            <th scope="row"><strong>WANJIRU, Grace</strong> <span class="muted">(Mrs)</span></th>
+            <td class="mono">NKB-0049213</td>
+            <td class="mono">14-Mar-1992</td>
+            <td>F</td>
+            <td class="mono">+254 712 ••• •89</td>
+            <td>18-May-2026</td>
+            <td><a href="#" class="row-action">Open record</a></td>
+          </tr>
+          <tr class="find-results__row">
+            <th scope="row">WANJIKU, Mary</th>
+            <td class="mono">NKB-0038104</td>
+            <td class="mono">22-Jul-1978</td>
+            <td>F</td>
+            <td class="mono">+254 720 ••• •42</td>
+            <td>03-May-2026</td>
+            <td><a href="#" class="row-action">Open record</a></td>
+          </tr>
+          <tr class="find-results__row">
+            <th scope="row">WANJALA, Peter</th>
+            <td class="mono">NKB-0041923</td>
+            <td class="mono">09-Nov-1965</td>
+            <td>M</td>
+            <td class="mono">+254 733 ••• •11</td>
+            <td>21-Apr-2026</td>
+            <td><a href="#" class="row-action">Open record</a></td>
+          </tr>
+          <tr class="find-results__row">
+            <th scope="row">WANJIRU, Faith</th>
+            <td class="mono">NKB-0029740</td>
+            <td class="mono">04-Feb-2014</td>
+            <td>F</td>
+            <td class="mono">+254 711 ••• •76</td>
+            <td>15-Jan-2026</td>
+            <td><a href="#" class="row-action">Open record</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="find-modal__foot">
+    <p class="find-modal__empty">Can't find who you're looking for? <a href="#">Register a new patient</a></p>
+    <div class="find-modal__actions">
+      <button type="button" class="button secondary" data-action="find-close">Cancel</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>

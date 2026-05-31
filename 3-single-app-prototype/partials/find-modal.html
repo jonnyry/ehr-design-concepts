@@ -1,0 +1,106 @@
+<!-- Find Patient modal — canonical partial
+     Inline this into any page that needs it.
+     Requires: assets/css/app.css, assets/js/app.js
+     Trigger open:  data-action="find-open"
+     Trigger open from modules panel: data-action="find-open-from-modules"
+-->
+<dialog class="find-modal" id="findPatientModal" aria-labelledby="findPatientTitle">
+  <div class="find-modal__head">
+    <h2 class="find-modal__title" id="findPatientTitle">Find patient</h2>
+    <button type="button" class="find-modal__close" aria-label="Close" data-action="find-close">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M2 2L14 14M14 2L2 14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="find-modal__body">
+    <div class="find-search">
+      <label for="findSearchInput" class="find-search__label">Search by name, MRN, phone or date of birth</label>
+      <div class="find-search__input-wrap">
+        <svg class="find-search__icon" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M13 13l5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+        <input type="search" id="findSearchInput" class="find-search__input" placeholder="e.g. Wanjiru, NKB-0049213, +254..." autofocus>
+      </div>
+      <div class="find-search__chips" role="group" aria-label="Quick filters">
+        <button type="button" class="chip chip--active">All patients</button>
+        <button type="button" class="chip">Recent</button>
+        <button type="button" class="chip">My patients</button>
+        <button type="button" class="chip">Today's appointments</button>
+        <button type="button" class="chip chip--icon">
+          <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 4h12M3 7h8M5 10h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          More filters
+        </button>
+      </div>
+    </div>
+
+    <div class="find-results">
+      <div class="find-results__meta">
+        <span><strong>4</strong> patients matching "wanj"</span>
+        <span class="find-results__sort">
+          Sorted by: <a href="#">Last seen ↓</a>
+        </span>
+      </div>
+      <table class="find-results__table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">MRN</th>
+            <th scope="col">DOB</th>
+            <th scope="col">Sex</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Last seen</th>
+            <th scope="col" aria-label="Actions"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="find-results__row find-results__row--highlight">
+            <th scope="row"><strong>WANJIRU, Grace</strong> <span class="muted">(Mrs)</span></th>
+            <td class="mono">NKB-0049213</td>
+            <td class="mono">14-Mar-1992</td>
+            <td>F</td>
+            <td class="mono">+254 712 ••• •89</td>
+            <td>18-May-2026</td>
+            <td><a href="#" class="row-action">Open record</a></td>
+          </tr>
+          <tr class="find-results__row">
+            <th scope="row">WANJIKU, Mary</th>
+            <td class="mono">NKB-0038104</td>
+            <td class="mono">22-Jul-1978</td>
+            <td>F</td>
+            <td class="mono">+254 720 ••• •42</td>
+            <td>03-May-2026</td>
+            <td><a href="#" class="row-action">Open record</a></td>
+          </tr>
+          <tr class="find-results__row">
+            <th scope="row">WANJALA, Peter</th>
+            <td class="mono">NKB-0041923</td>
+            <td class="mono">09-Nov-1965</td>
+            <td>M</td>
+            <td class="mono">+254 733 ••• •11</td>
+            <td>21-Apr-2026</td>
+            <td><a href="#" class="row-action">Open record</a></td>
+          </tr>
+          <tr class="find-results__row">
+            <th scope="row">WANJIRU, Faith</th>
+            <td class="mono">NKB-0029740</td>
+            <td class="mono">04-Feb-2014</td>
+            <td>F</td>
+            <td class="mono">+254 711 ••• •76</td>
+            <td>15-Jan-2026</td>
+            <td><a href="#" class="row-action">Open record</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="find-modal__foot">
+    <p class="find-modal__empty">Can't find who you're looking for? <a href="#">Register a new patient</a></p>
+    <div class="find-modal__actions">
+      <button type="button" class="button secondary" data-action="find-close">Cancel</button>
+    </div>
+  </div>
+</dialog>
