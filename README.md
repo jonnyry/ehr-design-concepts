@@ -27,4 +27,4 @@
 
 ### Integrated into one prototype
 
-[GOV.UK inspired prototype](3-single-app-prototype/index.html)
+[GOV.UK inspired prototype](3-single-app-prototype/index.html) (alll modules, quick links and patient find clickable)
