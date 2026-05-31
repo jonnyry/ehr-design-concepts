@@ -200,6 +200,10 @@
     color: var(--text);
     border-color: var(--bg-grey);
   }
+  .modules-btn__icon { display: block; flex: none; }
+  .modules-btn__icon--close { display: none; }
+  .modules-btn.is-open .modules-btn__icon--menu { display: none; }
+  .modules-btn.is-open .modules-btn__icon--close { display: block; }
 
   /* ---------- Modules dropdown panel ---------- */
   .modules-panel {
@@ -591,13 +595,19 @@
     padding: 0;
     background: #fff;
     color: var(--text);
-    width: min(960px, calc(100vw - 60px));
-    max-height: calc(100vh - 60px);
+    width: min(1400px, calc(100vw - 60px));
+    height: min(820px, calc(100vh - 60px));
+    min-width: 600px;
+    min-height: 400px;
+    max-width: calc(100vw - 30px);
+    max-height: calc(100vh - 30px);
     margin: 30px auto;
     box-shadow: 0 16px 48px rgba(0,0,0,0.25);
     font-family: var(--font);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    resize: both;
   }
   dialog.find-modal::backdrop {
     background: rgba(11, 12, 12, 0.55);
@@ -846,8 +856,11 @@
       b.setAttribute('aria-expanded', open);
       b.classList.toggle('is-open', open);
     ">
-      <svg width="18" height="14" viewBox="0 0 18 14" aria-hidden="true">
+      <svg class="modules-btn__icon modules-btn__icon--menu" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true">
         <path d="M0 1h18M0 7h18M0 13h18" stroke="currentColor" stroke-width="2"/>
+      </svg>
+      <svg class="modules-btn__icon modules-btn__icon--close" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+        <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
       </svg>
       <span>Modules</span>
     </button>
