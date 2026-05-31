@@ -184,10 +184,17 @@ var app = {
     comms: 'Comms', templates: 'Templates',
     appointments: 'Appointments', tasks: 'Workflow & Tasks',
     'register-patient': 'Register patient', reporting: 'Reporting', inbox: 'Inbox',
+    users: 'Users', organisations: 'Organisations', locations: 'Locations',
+    'comms-links': 'Comms links', coding: 'Coding',
+    'audit-log': 'Audit log', 'batch-edit': 'Batch edit', 'patient-merge': 'Patient merge',
   };
 
   var PATIENT_ROUTES = { summary: 1, encounters: 1, prescribing: 1, labs: 1, vaccinations: 1, documents: 1, comms: 1, templates: 1 };
-  var CLINIC_ROUTES  = { appointments: 1, tasks: 1, 'register-patient': 1, reporting: 1, inbox: 1 };
+  var CLINIC_ROUTES  = {
+    appointments: 1, tasks: 1, 'register-patient': 1, reporting: 1, inbox: 1,
+    users: 1, organisations: 1, locations: 1, 'comms-links': 1, coding: 1,
+    'audit-log': 1, 'batch-edit': 1, 'patient-merge': 1,
+  };
 
   // ── Router ──────────────────────────────────────────────────────────────────
 
