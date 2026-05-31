@@ -155,14 +155,14 @@
 <nav class="patient-submenu" id="patientSubmenu" aria-label="Patient record">
   <div class="patient-submenu-inner">
     <ul>
-      <li><a href="#" class="active">Summary</a></li>
-      <li><a href="#">Encounters</a></li>
-      <li><a href="#">Prescribing</a></li>
-      <li><a href="#">Labs <span class="badge">3</span></a></li>
-      <li><a href="#">Vaccinations</a></li>
-      <li><a href="#">Documents</a></li>
-      <li><a href="#">Comms</a></li>
-      <li><a href="#">Templates</a></li>
+      <li><a href="#/summary" data-route="summary">Summary</a></li>
+      <li><a href="#/encounters" data-route="encounters">Encounters</a></li>
+      <li><a href="#/prescribing" data-route="prescribing">Prescribing</a></li>
+      <li><a href="#/labs" data-route="labs">Labs <span class="badge">3</span></a></li>
+      <li><a href="#/vaccinations" data-route="vaccinations">Vaccinations</a></li>
+      <li><a href="#/documents" data-route="documents">Documents</a></li>
+      <li><a href="#/comms" data-route="comms">Comms</a></li>
+      <li><a href="#/templates" data-route="templates">Templates</a></li>
     </ul>
   </div>
 </nav>
@@ -170,172 +170,7 @@
 <div class="container">
   <main class="main-content" id="main-content">
 
-    <!-- ===== Page heading ===== -->
-    <div class="page-heading">
-      <div>
-        <span class="caption">Patient record</span>
-        <h2>Summary</h2>
-      </div>
-      <div class="actions">
-        <button class="button secondary" type="button">Print summary</button>
-        <button class="button" type="button">Start new encounter</button>
-      </div>
-    </div>
-
-    <!-- ===== Two-column layout ===== -->
-    <div class="columns">
-
-      <div class="col-main">
-
-        <!-- Problems -->
-        <section>
-          <h3 class="section-heading">Active problems</h3>
-          <dl class="summary-list">
-            <div class="sl-row">
-              <dt>Type 2 diabetes mellitus</dt>
-              <dd>ICD-10: E11 · Diagnosed 2023 <br>
-                <span class="tag tag--yellow">Active</span></dd>
-              <dd class="sl-actions"><a href="#">Change</a></dd>
-            </div>
-            <div class="sl-row">
-              <dt>Hypertension</dt>
-              <dd>ICD-10: I10 · Diagnosed 2024 <br>
-                <span class="tag tag--yellow">Active</span></dd>
-              <dd class="sl-actions"><a href="#">Change</a></dd>
-            </div>
-            <div class="sl-row">
-              <dt>Antenatal care — G3 P2</dt>
-              <dd>Estimated delivery 18-Aug-2026 <br>
-                <span class="tag tag--green">Monitored</span></dd>
-              <dd class="sl-actions"><a href="#">Change</a></dd>
-            </div>
-          </dl>
-        </section>
-
-        <!-- Medications -->
-        <section>
-          <h3 class="section-heading">Current medication</h3>
-          <dl class="summary-list">
-            <div class="sl-row">
-              <dt>Metformin 500&nbsp;mg</dt>
-              <dd>1 tablet, twice daily, oral. Since 01-Jan-2026.</dd>
-              <dd class="sl-actions"><a href="#">Change</a></dd>
-            </div>
-            <div class="sl-row">
-              <dt>Methyldopa 250&nbsp;mg</dt>
-              <dd>1 tablet, three times daily, oral. Since 03-Apr-2026.</dd>
-              <dd class="sl-actions"><a href="#">Change</a></dd>
-            </div>
-            <div class="sl-row">
-              <dt>Ferrous sulphate + folic acid</dt>
-              <dd>1 tablet once daily, oral. Antenatal supplementation.</dd>
-              <dd class="sl-actions"><a href="#">Change</a></dd>
-            </div>
-          </dl>
-        </section>
-
-        <!-- Latest vitals -->
-        <section>
-          <h3 class="section-heading">Latest vitals</h3>
-          <p style="margin:0 0 10px; color: var(--text-muted);">Recorded 18-May-2026 by MWANGI, A. (Dr).</p>
-          <table class="data-table">
-            <caption>Latest vitals</caption>
-            <thead>
-              <tr>
-                <th scope="col">Measurement</th>
-                <th scope="col" class="numeric">Value</th>
-                <th scope="col" class="numeric">Reference</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Blood pressure</th>
-                <td class="numeric"><span class="value-flag">148 / 94 mmHg</span></td>
-                <td class="numeric">&lt; 140 / 90</td>
-              </tr>
-              <tr>
-                <th scope="row">Pulse</th>
-                <td class="numeric">82 bpm</td>
-                <td class="numeric">60–100</td>
-              </tr>
-              <tr>
-                <th scope="row">Temperature</th>
-                <td class="numeric">36.8 °C</td>
-                <td class="numeric">36.1–37.2</td>
-              </tr>
-              <tr>
-                <th scope="row">Oxygen saturation</th>
-                <td class="numeric">98 %</td>
-                <td class="numeric">≥ 95</td>
-              </tr>
-              <tr>
-                <th scope="row">Weight</th>
-                <td class="numeric">71.2 kg</td>
-                <td class="numeric">—</td>
-              </tr>
-              <tr>
-                <th scope="row">BMI</th>
-                <td class="numeric">26.1</td>
-                <td class="numeric">18.5–24.9</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="inset-text">
-            Blood pressure has been elevated at the last two visits. Continue methyldopa and review at next antenatal appointment.
-          </div>
-        </section>
-
-      </div><!-- /col-main -->
-
-      <aside class="col-side" aria-label="Related">
-
-        <section>
-          <h3 class="section-heading">Recent encounters</h3>
-          <ul class="related-nav">
-            <li>
-              <a href="#">Antenatal review</a>
-              <span class="meta">18-May-2026 · MWANGI, A. (Dr)</span>
-            </li>
-            <li>
-              <a href="#">Diabetes follow-up</a>
-              <span class="meta">02-Apr-2026 · OTIENO, J. (Sr)</span>
-            </li>
-            <li>
-              <a href="#">Antenatal booking visit</a>
-              <span class="meta">10-Mar-2026 · MWANGI, A. (Dr)</span>
-            </li>
-            <li>
-              <a href="#">Routine review</a>
-              <span class="meta">14-Jan-2026 · MWANGI, A. (Dr)</span>
-            </li>
-          </ul>
-        </section>
-
-        <section style="margin-top:30px;">
-          <h3 class="section-heading">Allergies and intolerances</h3>
-          <ul class="related-nav">
-            <li>
-              <strong>Penicillin</strong>
-              <span class="meta">Severe · confirmed 2023</span>
-            </li>
-            <li style="color: var(--text-muted);">
-              No other allergies recorded.
-            </li>
-          </ul>
-        </section>
-
-        <section style="margin-top:30px;">
-          <h3 class="section-heading">Outstanding tasks</h3>
-          <ul class="related-nav">
-            <li><a href="#">Review FBC result</a><span class="meta">Ordered 18-May-2026</span></li>
-            <li><a href="#">Review HbA1c result</a><span class="meta">Ordered 18-May-2026</span></li>
-            <li><a href="#">Sign off antenatal note</a><span class="meta">Draft from 18-May-2026</span></li>
-          </ul>
-        </section>
-
-      </aside>
-
-    </div><!-- /columns -->
+    <!-- content injected by router (app.js) -->
   </main>
 </div>
 

@@ -103,3 +103,69 @@ document.addEventListener('click', function (e) {
     el.querySelector('.pb-toggle-label').textContent = open ? 'Less' : 'More';
   }
 });
+
+// Hash router — fetches module fragments into #main-content.
+// Requires an HTTP server (file:// won't work in Chrome due to fetch restrictions).
+// To run locally: python -m http.server 8080  or use VS Code Live Server.
+(function () {
+  var routes = {
+    'summary':      'modules/summary.html',
+    'encounters':   'modules/encounters.html',
+    'prescribing':  'modules/prescribing.html',
+    'labs':         'modules/labs.html',
+    'vaccinations': 'modules/vaccinations.html',
+    'documents':    'modules/documents.html',
+    'comms':        'modules/comms.html',
+    'templates':    'modules/templates.html',
+  };
+
+  var titles = {
+    'summary':      'Summary',
+    'encounters':   'Encounters',
+    'prescribing':  'Prescribing',
+    'labs':         'Labs',
+    'vaccinations': 'Vaccinations',
+    'documents':    'Documents',
+    'comms':        'Comms',
+    'templates':    'Templates',
+  };
+
+  function currentRoute() {
+    return window.location.hash.replace(/^#\//, '') || 'summary';
+  }
+
+  function navigate(route) {
+    if (!routes[route]) route = 'summary';
+
+    // Update sub-menu active state immediately
+    document.querySelectorAll('.patient-submenu a[data-route]').forEach(function (a) {
+      a.classList.toggle('active', a.dataset.route === route);
+    });
+
+    // Update page title
+    document.title = (titles[route] || route) + ' — WANJIRU, Grace — ClearCare EHR';
+
+    fetch(routes[route])
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      })
+      .then(function (html) {
+        var main = document.getElementById('main-content');
+        main.innerHTML = html;
+        main.scrollTop = 0;
+        window.scrollTo(0, 0);
+      })
+      .catch(function () {
+        document.getElementById('main-content').innerHTML =
+          '<p style="padding:30px 0;color:var(--text-muted)">Module not available.</p>';
+      });
+  }
+
+  window.addEventListener('hashchange', function () {
+    navigate(currentRoute());
+  });
+
+  // Load the initial route on page load
+  navigate(currentRoute());
+})();
