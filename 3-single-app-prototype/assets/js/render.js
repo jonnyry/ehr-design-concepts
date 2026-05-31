@@ -516,6 +516,337 @@ ${sched.length ? `<section>
 </section>`;
   };
 
+  // Appointments
+  render.appointments = function () {
+    var appts = [
+      { time: '08:00', patient: 'MURIITHI, Samuel', mrn: 'NKB-0052104', type: 'Hypertension review',          clinician: 'MWANGI, A. (Dr)',    status: 'completed'   },
+      { time: '08:20', patient: 'GITONGA, Alice',   mrn: 'NKB-0044381', type: 'Antenatal review',              clinician: 'MWANGI, A. (Dr)',    status: 'completed'   },
+      { time: '08:40', patient: 'NKUROI, David',    mrn: 'NKB-0036847', type: 'Diabetes & hypertension',       clinician: 'OTIENO, J. (Sr)',    status: 'dna'         },
+      { time: '09:00', patient: 'KARIMI, Esther',   mrn: 'NKB-0058012', type: 'General consultation',          clinician: 'KARIUKI, P. (Nurse)',status: 'in-progress' },
+      { time: '09:20', patient: 'WANJIKU, Mary',    mrn: 'NKB-0038104', type: 'Diabetes follow-up',            clinician: 'OTIENO, J. (Sr)',    status: 'waiting'     },
+      { time: '09:40', patient: 'MWENDA, Joseph',   mrn: 'NKB-0033219', type: 'Annual review',                 clinician: 'MWANGI, A. (Dr)',    status: 'booked'      },
+      { time: '10:00', patient: '(Walk-in slot)',    mrn: null,          type: '—',                             clinician: '—',                  status: 'free'        },
+      { time: '10:20', patient: 'MUTHEE, Rose',     mrn: 'NKB-0022143', type: 'Routine review',                clinician: 'KARIUKI, P. (Nurse)',status: 'booked'      },
+      { time: '10:40', patient: 'WANJALA, Peter',   mrn: 'NKB-0041923', type: 'Hypertension follow-up',        clinician: 'MWANGI, A. (Dr)',    status: 'booked'      },
+      { time: '11:00', patient: '(Slot free)',       mrn: null,          type: '—',                             clinician: '—',                  status: 'free'        },
+      { time: '11:20', patient: 'WANJIRU, Faith',   mrn: 'NKB-0029740', type: 'Child health check',            clinician: 'KARIUKI, P. (Nurse)',status: 'booked'      },
+      { time: '11:40', patient: 'WANJIRU, Grace',   mrn: 'NKB-0049213', type: 'Antenatal — blood results',     clinician: 'MWANGI, A. (Dr)',    status: 'booked'      },
+    ];
+    var apptTag = { completed: ['tag--green','Completed'], 'in-progress': ['tag','In progress'],
+                    waiting: ['tag--yellow','Waiting'], booked: ['tag--grey','Booked'], dna: ['tag--red','DNA'] };
+
+    return `
+<div class="page-heading">
+  <div><span class="caption">Clinic — Monday 31 May 2026</span><h2>Appointments</h2></div>
+  <div class="actions">
+    <button class="button secondary" type="button">Print list</button>
+    <button class="button" type="button">New appointment</button>
+  </div>
+</div>
+<div style="margin-bottom:20px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+  <button type="button" class="chip chip--active">Today</button>
+  <button type="button" class="chip">This week</button>
+  <span style="margin-left:8px;display:flex;align-items:center;gap:8px;font-size:16px;color:var(--text-muted)">
+    Clinician:
+    <select style="font:inherit;font-size:16px;padding:4px 8px;border:1px solid var(--border);background:#fff">
+      <option>All clinicians</option><option>MWANGI, A. (Dr)</option>
+      <option>OTIENO, J. (Sr)</option><option>KARIUKI, P. (Nurse)</option>
+    </select>
+  </span>
+</div>
+<table class="data-table">
+  <caption>Today's appointments</caption>
+  <thead><tr>
+    <th scope="col">Time</th><th scope="col">Patient</th><th scope="col">MRN</th>
+    <th scope="col">Type</th><th scope="col">Clinician</th><th scope="col">Status</th>
+    <th scope="col" aria-label="Actions"></th>
+  </tr></thead>
+  <tbody>
+    ${appts.map(a => {
+      var t = apptTag[a.status];
+      return `<tr${a.status === 'free' ? ' style="color:var(--text-muted)"' : ''}>
+        <td class="mono">${a.time}</td>
+        <td>${a.mrn
+          ? `<a href="#" style="color:var(--blue);text-decoration:underline;font-weight:700" data-action="open-patient" data-mrn="${a.mrn}">${a.patient}</a>`
+          : a.patient}</td>
+        <td class="mono" style="font-size:14px">${a.mrn || ''}</td>
+        <td>${a.type}</td>
+        <td>${a.clinician}</td>
+        <td>${t ? `<span class="tag ${t[0]}">${t[1]}</span>` : ''}</td>
+        <td>${a.status !== 'free' ? '<a href="#" style="color:var(--blue);text-decoration:underline">Details</a>' : ''}</td>
+      </tr>`;
+    }).join('')}
+  </tbody>
+</table>`;
+  };
+
+  // Workflow & Tasks
+  render.tasks = function () {
+    var urgent = [
+      { title: 'Review FBC result',            patient: 'WANJIRU, Grace', mrn: 'NKB-0049213', due: 'Today',     assignee: 'MWANGI, A. (Dr)',    type: 'Lab result'   },
+      { title: 'Review HbA1c result',           patient: 'WANJIRU, Grace', mrn: 'NKB-0049213', due: 'Today',     assignee: 'MWANGI, A. (Dr)',    type: 'Lab result'   },
+      { title: 'Review urine protein result',   patient: 'WANJIRU, Grace', mrn: 'NKB-0049213', due: 'Today',     assignee: 'MWANGI, A. (Dr)',    type: 'Lab result'   },
+    ];
+    var mine = [
+      { title: 'Sign off antenatal note',           patient: 'WANJIRU, Grace', mrn: 'NKB-0049213', due: 'Today',         assignee: 'MWANGI, A. (Dr)',    type: 'Clinical note' },
+      { title: 'HbA1c + glucose review',            patient: 'WANJIKU, Mary',  mrn: 'NKB-0038104', due: 'Today',         assignee: 'OTIENO, J. (Sr)',     type: 'Lab result'    },
+      { title: 'Contact re: DNA appointment',       patient: 'NKUROI, David',  mrn: 'NKB-0036847', due: 'Tomorrow',      assignee: 'KARIUKI, P. (Nurse)', type: 'Admin'         },
+    ];
+    var team = [
+      { title: 'Batch lab results review (12 patients)', patient: null, mrn: null, due: 'Today',         assignee: 'All clinicians',       type: 'Lab results' },
+      { title: 'Update vaccination records (3 patients)',patient: null, mrn: null, due: 'This week',     assignee: 'KARIUKI, P. (Nurse)',  type: 'Admin'       },
+      { title: 'Monthly morbidity report',               patient: null, mrn: null, due: '05-Jun-2026',   assignee: 'MWANGI, A. (Dr)',     type: 'Reporting'   },
+    ];
+
+    function row(t) {
+      return `<div class="sl-row">
+        <dt>${t.title}</dt>
+        <dd>${t.patient
+          ? `Patient: <a href="#" style="color:var(--blue);text-decoration:underline" data-action="open-patient" data-mrn="${t.mrn}">${t.patient}</a><br>`
+          : ''}Assigned: ${t.assignee} · Due: <strong>${t.due}</strong><br>
+          <span class="tag tag--grey" style="font-size:13px">${t.type}</span></dd>
+        <dd class="sl-actions"><a href="#">Complete</a></dd>
+      </div>`;
+    }
+
+    function badge(n, colour) {
+      return `<span style="background:${colour};color:#fff;padding:2px 8px;font-size:14px;font-weight:700;margin-left:8px;vertical-align:middle">${n}</span>`;
+    }
+
+    return `
+<div class="page-heading">
+  <div><span class="caption">Clinic</span><h2>Workflow &amp; Tasks</h2></div>
+  <div class="actions"><button class="button" type="button">New task</button></div>
+</div>
+<section>
+  <h3 class="section-heading">Urgent — action today ${badge(urgent.length, 'var(--red)')}</h3>
+  <dl class="summary-list">${urgent.map(row).join('')}</dl>
+</section>
+<section>
+  <h3 class="section-heading">My tasks ${badge(mine.length, 'var(--blue)')}</h3>
+  <dl class="summary-list">${mine.map(row).join('')}</dl>
+</section>
+<section>
+  <h3 class="section-heading">Team queue</h3>
+  <dl class="summary-list">${team.map(row).join('')}</dl>
+</section>`;
+  };
+
+  // Register patient
+  render['register-patient'] = function () {
+    return `
+<div class="page-heading">
+  <div><span class="caption">Patient registration</span><h2>Register patient</h2></div>
+</div>
+<form>
+  <div class="form-columns">
+    <div>
+      <section class="form-section">
+        <h3 class="form-section-heading">Personal details</h3>
+        <div class="form-group">
+          <label class="form-label" for="reg-surname">Surname <span class="required">*</span></label>
+          <input class="form-input" type="text" id="reg-surname" autocomplete="family-name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-forename">Forename <span class="required">*</span></label>
+          <input class="form-input" type="text" id="reg-forename" autocomplete="given-name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-title">Title</label>
+          <select class="form-select" style="max-width:160px" id="reg-title">
+            <option value="">—</option><option>Mr</option><option>Mrs</option>
+            <option>Ms</option><option>Miss</option><option>Dr</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-sex">Sex <span class="required">*</span></label>
+          <select class="form-select" style="max-width:200px" id="reg-sex">
+            <option value="">Select</option><option>Male</option><option>Female</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-dob">Date of birth <span class="required">*</span></label>
+          <span class="form-hint">DD/MM/YYYY</span>
+          <input class="form-input" style="max-width:220px" type="date" id="reg-dob">
+        </div>
+      </section>
+      <section class="form-section">
+        <h3 class="form-section-heading">Contact details</h3>
+        <div class="form-group">
+          <label class="form-label" for="reg-phone">Mobile phone <span class="required">*</span></label>
+          <input class="form-input" type="tel" id="reg-phone" autocomplete="tel">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-phone2">Alternative phone</label>
+          <input class="form-input" type="tel" id="reg-phone2">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-address">Address <span class="required">*</span></label>
+          <textarea class="form-input" id="reg-address" rows="3" style="resize:vertical"></textarea>
+        </div>
+      </section>
+    </div>
+    <div>
+      <section class="form-section">
+        <h3 class="form-section-heading">Next of kin</h3>
+        <div class="form-group">
+          <label class="form-label" for="reg-kin-name">Name</label>
+          <input class="form-input" type="text" id="reg-kin-name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-kin-rel">Relationship</label>
+          <input class="form-input" style="max-width:280px" type="text" id="reg-kin-rel" placeholder="e.g. Husband, Mother">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-kin-phone">Phone</label>
+          <input class="form-input" type="tel" id="reg-kin-phone">
+        </div>
+      </section>
+      <section class="form-section">
+        <h3 class="form-section-heading">Clinical information</h3>
+        <div class="form-group">
+          <label class="form-label" for="reg-blood">Blood group</label>
+          <select class="form-select" style="max-width:220px" id="reg-blood">
+            <option value="">Unknown</option>
+            <option>A Rh+</option><option>A Rh−</option><option>B Rh+</option><option>B Rh−</option>
+            <option>AB Rh+</option><option>AB Rh−</option><option>O Rh+</option><option>O Rh−</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-allergies">Known allergies</label>
+          <span class="form-hint">Drug or environmental allergies, if known.</span>
+          <textarea class="form-input" id="reg-allergies" rows="3" style="resize:vertical"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-languages">Preferred language(s)</label>
+          <input class="form-input" type="text" id="reg-languages" placeholder="e.g. Kiswahili, English">
+        </div>
+      </section>
+      <section class="form-section">
+        <h3 class="form-section-heading">Demographics</h3>
+        <div class="form-group">
+          <label class="form-label" for="reg-marital">Marital status</label>
+          <select class="form-select" style="max-width:220px" id="reg-marital">
+            <option value="">—</option><option>Single</option><option>Married</option>
+            <option>Divorced</option><option>Widowed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reg-occupation">Occupation</label>
+          <input class="form-input" type="text" id="reg-occupation">
+        </div>
+      </section>
+    </div>
+  </div>
+  <div class="inset-text" style="margin-bottom:24px">
+    Fields marked <span class="required">*</span> are required.
+    The MRN will be assigned automatically on save.
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;padding-bottom:40px">
+    <button class="button" type="button">Save registration</button>
+    <button class="button secondary" type="button">Cancel</button>
+  </div>
+</form>`;
+  };
+
+  // Reporting
+  render.reporting = function () {
+    return `
+<div class="page-heading">
+  <div><span class="caption">Clinic</span><h2>Reporting</h2></div>
+  <div class="actions">
+    <button class="button secondary" type="button">Export CSV</button>
+    <button class="button" type="button">Print report</button>
+  </div>
+</div>
+<div class="stat-cards">
+  <div class="stat-card"><div class="stat-card__number">47</div><div class="stat-card__label">Patients registered this month</div></div>
+  <div class="stat-card"><div class="stat-card__number">184</div><div class="stat-card__label">Appointments this week</div></div>
+  <div class="stat-card stat-card--red"><div class="stat-card__number">12</div><div class="stat-card__label">Outstanding tasks</div></div>
+  <div class="stat-card stat-card--yellow"><div class="stat-card__number">3</div><div class="stat-card__label">Lab results pending review</div></div>
+</div>
+<section>
+  <h3 class="section-heading">Activity this week — by clinician</h3>
+  <table class="data-table">
+    <caption>Activity this week</caption>
+    <thead><tr>
+      <th scope="col">Clinician</th>
+      <th scope="col" class="numeric">Consultations</th>
+      <th scope="col" class="numeric">New patients</th>
+      <th scope="col" class="numeric">Lab requests</th>
+      <th scope="col" class="numeric">Referrals</th>
+      <th scope="col" class="numeric">DNA rate</th>
+    </tr></thead>
+    <tbody>
+      <tr><th scope="row">MWANGI, A. (Dr)</th><td class="numeric">38</td><td class="numeric">4</td><td class="numeric">12</td><td class="numeric">2</td><td class="numeric">8%</td></tr>
+      <tr><th scope="row">OTIENO, J. (Sr)</th><td class="numeric">31</td><td class="numeric">2</td><td class="numeric">9</td><td class="numeric">1</td><td class="numeric">6%</td></tr>
+      <tr><th scope="row">KARIUKI, P. (Nurse)</th><td class="numeric">44</td><td class="numeric">6</td><td class="numeric">3</td><td class="numeric">0</td><td class="numeric">11%</td></tr>
+      <tr style="font-weight:700"><th scope="row">Total</th><td class="numeric">113</td><td class="numeric">12</td><td class="numeric">24</td><td class="numeric">3</td><td class="numeric">9%</td></tr>
+    </tbody>
+  </table>
+</section>
+<section>
+  <h3 class="section-heading">Top diagnoses this month</h3>
+  <table class="data-table">
+    <caption>Top diagnoses</caption>
+    <thead><tr>
+      <th scope="col">Diagnosis</th><th scope="col">ICD-10</th>
+      <th scope="col" class="numeric">Patients</th><th scope="col" class="numeric">% of total</th>
+    </tr></thead>
+    <tbody>
+      <tr><th scope="row">Hypertension</th><td>I10</td><td class="numeric">84</td><td class="numeric">18%</td></tr>
+      <tr><th scope="row">Type 2 diabetes mellitus</th><td>E11</td><td class="numeric">71</td><td class="numeric">15%</td></tr>
+      <tr><th scope="row">Antenatal care</th><td>Z34</td><td class="numeric">52</td><td class="numeric">11%</td></tr>
+      <tr><th scope="row">Upper respiratory tract infection</th><td>J06</td><td class="numeric">38</td><td class="numeric">8%</td></tr>
+      <tr><th scope="row">Malaria</th><td>B54</td><td class="numeric">29</td><td class="numeric">6%</td></tr>
+    </tbody>
+  </table>
+</section>`;
+  };
+
+  // Inbox
+  render.inbox = function () {
+    var msgs = [
+      { from: 'OTIENO, J. (Sr)',      subject: 'Lab review — HbA1c results for 3 patients',   preview: 'Please review the HbA1c results for WANJIKU, Mary; NKUROI, David; and MWENDA, Joseph. Results attached.',   date: '2 hours ago', read: false, type: 'Lab result' },
+      { from: 'Lab system',           subject: 'Batch results available (12 patients)',         preview: 'New laboratory results are available for 12 patients registered at Nkubu HC. Log in to review and sign off.', date: 'Yesterday',   read: false, type: 'Lab result' },
+      { from: 'KARIUKI, P. (Nurse)',  subject: 'Clinic rota update — June 2026',               preview: 'Please see the updated rota for June. Dr MWANGI will be on leave 15–19 June. Cover arrangements below.',      date: '2 days ago',  read: true,  type: 'Admin'     },
+      { from: 'System',               subject: 'Monthly report ready — May 2026',              preview: 'The automated morbidity and activity report for May 2026 is available under Reporting.',                       date: '3 days ago',  read: true,  type: 'System'    },
+      { from: 'MWANGI, A. (Dr)',      subject: 'Re: Referral — WANJIRU, Grace to Meru L5',    preview: 'Confirmed — referral accepted. Appointment: 12 Jun 2026 at 10:00. Please inform the patient.',                date: '1 week ago',  read: true,  type: 'Referral'  },
+    ];
+    var unread = msgs.filter(function (m) { return !m.read; }).length;
+
+    return `
+<div class="page-heading">
+  <div><span class="caption">Clinic</span>
+    <h2>Inbox ${unread ? `<span style="background:var(--red);color:#fff;font-size:18px;font-weight:700;padding:2px 10px;vertical-align:middle;margin-left:8px">${unread}</span>` : ''}</h2>
+  </div>
+  <div class="actions"><button class="button" type="button">New message</button></div>
+</div>
+<div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+  <button type="button" class="chip chip--active">All</button>
+  <button type="button" class="chip">Unread <span style="background:var(--red);color:#fff;padding:1px 6px;font-size:12px;font-weight:700;margin-left:4px">${unread}</span></button>
+  <button type="button" class="chip">Lab results</button>
+  <button type="button" class="chip">Referrals</button>
+  <button type="button" class="chip">System</button>
+</div>
+<ul class="message-list">
+  ${msgs.map(function (m) {
+    return `<li class="message-item">
+      <span class="message-item__dot${m.read ? ' message-item__dot--read' : ''}"></span>
+      <div class="message-item__body">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
+          <span class="message-item__from">${m.read ? m.from : `<strong>${m.from}</strong>`}</span>
+          <span class="message-item__meta">${m.date}</span>
+        </div>
+        <div class="message-item__subject">${m.read ? m.subject : `<strong>${m.subject}</strong>`}</div>
+        <div class="message-item__meta" style="margin-top:3px">${m.preview}</div>
+      </div>
+      <span class="tag tag--grey" style="font-size:13px;align-self:center;flex:none;white-space:nowrap">${m.type}</span>
+    </li>`;
+  }).join('')}
+</ul>`;
+  };
+
   // ── Exports ────────────────────────────────────────────────────────────────
 
   window.render       = render;

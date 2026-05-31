@@ -53,6 +53,18 @@
 
 // Event delegation for all data-action interactions
 document.addEventListener('click', function (e) {
+  // Auto-close modules panel when clicking any hash-nav link inside it
+  var modulesPanel = document.getElementById('modulesPanel');
+  if (modulesPanel && modulesPanel.classList.contains('is-open')) {
+    var anchor = e.target.closest('a[href^="#/"]');
+    if (anchor && modulesPanel.contains(anchor)) {
+      var btn = document.getElementById('modulesBtn');
+      modulesPanel.classList.remove('is-open');
+      btn.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  }
+
   var el = e.target.closest('[data-action]');
   if (!el) return;
 
@@ -137,7 +149,12 @@ var app = {
     summary: 'Summary', encounters: 'Encounters', prescribing: 'Prescribing',
     labs: 'Labs', vaccinations: 'Vaccinations', documents: 'Documents',
     comms: 'Comms', templates: 'Templates',
+    appointments: 'Appointments', tasks: 'Workflow & Tasks',
+    'register-patient': 'Register patient', reporting: 'Reporting', inbox: 'Inbox',
   };
+
+  // Routes that clear patient context when visited
+  var CLINIC_ROUTES = { appointments: 1, tasks: 1, 'register-patient': 1, reporting: 1, inbox: 1 };
 
   // ── Router ──────────────────────────────────────────────────────────────────
 
@@ -146,18 +163,29 @@ var app = {
   }
 
   function navigate(route) {
+    var isClinic = !!CLINIC_ROUTES[route];
+    if (!window.render || !window.render[route]) route = isClinic ? route : 'summary';
     if (!window.render || !window.render[route]) route = 'summary';
 
     document.querySelectorAll('.patient-submenu a[data-route]').forEach(function (a) {
       a.classList.toggle('active', a.dataset.route === route);
     });
 
+    // Clinic routes unload patient context
+    if (isClinic) {
+      app.state.patient = null;
+      var banner  = document.getElementById('patientBanner');
+      var submenu = document.getElementById('patientSubmenu');
+      if (banner)  banner.setAttribute('hidden', '');
+      if (submenu) submenu.setAttribute('hidden', '');
+    }
+
     var patient = app.state.patient;
     var label = patient ? patient.surname + ', ' + patient.forename : 'ClearCare EHR';
-    document.title = (TITLES[route] || route) + ' — ' + label + ' — ClearCare EHR';
+    document.title = (TITLES[route] || route) + ' — ' + label;
 
     var main = document.getElementById('main-content');
-    if (!patient && route !== 'templates') {
+    if (!patient && !isClinic && route !== 'templates') {
       main.innerHTML = '<p style="padding:60px 0;text-align:center;color:var(--text-muted)">Search for a patient to begin.</p>';
       return;
     }

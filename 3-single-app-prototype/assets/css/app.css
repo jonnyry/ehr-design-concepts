@@ -830,3 +830,81 @@ footer a { color: var(--blue); text-decoration: underline; text-underline-offset
   table.data-table { font-size: 17px; }
   table.data-table th, table.data-table td { padding: 10px 12px 10px 0; }
 }
+
+/* ---------- Form components (Register patient) ---------- */
+.form-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 60px;
+}
+.form-section { margin-bottom: 32px; }
+.form-section-heading {
+  font-size: 19px; font-weight: 700; margin: 0 0 20px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--border);
+}
+.form-group { margin-bottom: 20px; }
+.form-label { display: block; font-weight: 700; font-size: 18px; margin-bottom: 5px; }
+.form-hint { display: block; font-size: 16px; color: var(--text-muted); margin-bottom: 6px; }
+.form-input, .form-select {
+  font: inherit;
+  font-size: 18px;
+  padding: 7px 10px;
+  border: 2px solid var(--text);
+  background: #fff;
+  width: 100%;
+  max-width: 500px;
+  display: block;
+}
+.form-input:focus, .form-select:focus {
+  outline: 3px solid var(--focus);
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 2px var(--text);
+}
+textarea.form-input { resize: vertical; }
+.required { color: var(--red); }
+
+@media (max-width: 768px) {
+  .form-columns { grid-template-columns: 1fr; gap: 0; }
+}
+
+/* ---------- Stat cards (Reporting) ---------- */
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.stat-card {
+  background: var(--bg-grey);
+  padding: 20px 24px;
+  border-left: 4px solid var(--blue);
+}
+.stat-card--red    { border-left-color: var(--red); }
+.stat-card--green  { border-left-color: var(--green); }
+.stat-card--yellow { border-left-color: #b99c00; }
+.stat-card__number { font-size: 40px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+.stat-card__label  { font-size: 16px; color: var(--text-muted); margin-top: 4px; }
+
+/* ---------- Message list (Inbox) ---------- */
+.message-list { list-style: none; margin: 0; padding: 0; }
+.message-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  align-items: flex-start;
+}
+.message-item:hover { background: var(--bg-grey); margin: 0 -30px; padding: 16px 30px; }
+.message-item__dot {
+  width: 10px; height: 10px;
+  background: var(--blue);
+  border-radius: 50%;
+  flex: none;
+  margin-top: 7px;
+}
+.message-item__dot--read { background: transparent; border: 1px solid var(--border); }
+.message-item__body { flex: 1; min-width: 0; }
+.message-item__from { font-size: 17px; }
+.message-item__subject { font-size: 16px; margin-top: 1px; }
+.message-item__meta { font-size: 14px; color: var(--text-muted); }
