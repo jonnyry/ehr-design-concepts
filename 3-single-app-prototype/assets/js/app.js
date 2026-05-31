@@ -252,14 +252,18 @@ var app = {
         app.state.patient = data;
         window.renderBanner(data);
         var route = currentRoute();
-        if (route === 'summary' || !window.render[route]) {
-          // already on summary — re-render content
+        if (route === 'summary') {
           navigate('summary');
         } else {
           window.location.hash = '#/summary';
         }
       })
       .catch(function () {
+        app.state.patient = null;
+        var banner  = document.getElementById('patientBanner');
+        var submenu = document.getElementById('patientSubmenu');
+        if (banner)  banner.setAttribute('hidden', '');
+        if (submenu) submenu.setAttribute('hidden', '');
         document.getElementById('main-content').innerHTML =
           '<p style="padding:30px 0;color:var(--text-muted)">Could not load patient record.</p>';
       });
