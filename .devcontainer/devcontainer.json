@@ -1,0 +1,15 @@
+{
+  "name": "EHR Design Concepts",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "postStartCommand": "make install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.makefile-tools"
+      ]
+    }
+  },
+"forwardPorts": [5000]
+}
