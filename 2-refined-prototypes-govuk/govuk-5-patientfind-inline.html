@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find patient (inline page, over patient context) — Option 6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- GDS Transport isn't publicly licensed; using its closest free analogue. -->
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------- GOV.UK-inspired tokens ---------- */
+  :root {
+    --black: #0b0c0c;
+    --text: #0b0c0c;
+    --text-muted: #505a5f;
+    --border: #b1b4b6;
+    --border-light: #f3f2f1;
+    --bg: #ffffff;
+    --bg-grey: #f3f2f1;
+    --blue: #1d70b8;
+    --blue-dark: #003078;
+    --blue-hover: #003078;
+    --header-bg: #1f3a4d;
+    --header-bg-2: #25445a;
+    --green: #00703c;
+    --red: #d4351c;
+    --yellow: #ffdd00;
+    --focus: #ffdd00;
+    --action: #1d70b8;
+    --action-shadow: #0c3e66;
+    --action-hover: #155a93;
+    --font: "Public Sans", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    color: var(--text);
+    background: var(--bg);
+    font-size: 19px;
+    line-height: 1.47;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Focus state — yellow underline, GOV.UK signature */
+  a:focus, button:focus, [tabindex]:focus {
+    outline: 3px solid transparent;
+    color: var(--black);
+    background-color: var(--focus);
+    box-shadow: 0 -2px var(--focus), 0 4px var(--black);
+    text-decoration: none;
+  }
+
+  /* ---------- Top black bar (like gov.uk header) ---------- */
+  .gov-header {
+    background: var(--header-bg);
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .gov-header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .gov-logo {
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 10px;
+    color: #fff; text-decoration: none;
+    margin-right: 16px;
+  }
+  .gov-logo .crown {
+    display: inline-grid; place-items: center;
+    width: 30px; height: 30px;
+    background: #fff; color: var(--black);
+    font-weight: 700; font-size: 16px;
+  }
+  .gov-header .spacer { flex: 1; }
+  .gov-header .session-info {
+    font-size: 16px; display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+  }
+  .gov-header .session-info span { color: #fff; }
+  .gov-header .session-info a {
+    color: #fff; text-decoration: underline; text-underline-offset: 3px;
+  }
+  .gov-header .session-info a:hover { text-decoration-thickness: 3px; }
+
+  /* ---------- Modules button ---------- */
+  .modules-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    color: #fff;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 6px 12px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .modules-btn:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+  .modules-btn.is-open {
+    background: var(--bg-grey);
+    color: var(--text);
+    border-color: var(--bg-grey);
+  }
+  .modules-btn__icon { display: block; flex: none; }
+  .modules-btn__icon--close { display: none; }
+  .modules-btn.is-open .modules-btn__icon--menu { display: none; }
+  .modules-btn.is-open .modules-btn__icon--close { display: block; }
+
+  /* ---------- Modules dropdown panel ---------- */
+  .modules-panel {
+    background: var(--bg-grey);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    position: sticky;
+    top: var(--gov-header-h, 52px);
+    z-index: 95;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease;
+  }
+  .modules-panel.is-open {
+    max-height: 600px;
+    border-bottom: 1px solid var(--border);
+  }
+  .modules-panel-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 30px 28px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+  .modules-group h3.modules-group-heading {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin: 0 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+  }
+  .modules-group ul { list-style: none; margin: 0; padding: 0; }
+  .modules-group li { padding: 5px 0; }
+  .modules-group li a {
+    color: var(--blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-size: 16px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .modules-group li a:hover { text-decoration-thickness: 3px; color: var(--blue-dark); }
+  .modules-group li a .badge {
+    background: var(--red); color: #fff;
+    padding: 1px 6px;
+    font-size: 12px; font-weight: 700;
+    text-decoration: none;
+  }
+
+  /* ---------- Quick launch icons ---------- */
+  .quick-launch {
+    display: flex; gap: 4px;
+    margin-left: -8px;
+  }
+  .quick-launch a {
+    color: #fff;
+    text-decoration: none;
+    padding: 6px 10px;
+    font-size: 14px;
+    display: flex; align-items: center; gap: 6px;
+    border: 1px solid transparent;
+    position: relative;
+  }
+  .quick-launch a:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.4);
+  }
+  .quick-launch a.is-active {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.6);
+  }
+  .quick-launch a svg { flex: none; }
+  .quick-launch .ql-badge {
+    font-style: normal;
+    background: var(--red);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 5px;
+    margin-left: 2px;
+  }
+
+  /* ---------- Patient banner (sticky, collapsible) ---------- */
+  .patient-banner {
+    background: var(--bg-grey);
+    border-bottom: 1px solid var(--border);
+    border-top: 4px solid var(--blue);
+    position: sticky;
+    top: var(--header-total-h, 0);
+    z-index: 80;
+  }
+  .patient-banner-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+    position: relative;
+  }
+
+  .pb-summary {
+    display: flex; align-items: center; gap: 6px 24px; flex-wrap: wrap;
+    padding: 12px 70px 12px 0;
+  }
+  .pb-name {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    flex: none;
+  }
+  .pb-title { color: var(--text-muted); font-weight: 400; font-size: 18px; }
+  .pb-inline {
+    margin: 0; display: flex; gap: 4px 28px; flex-wrap: wrap;
+    font-size: 17px;
+  }
+  .pb-inline .item { display: flex; gap: 6px; align-items: baseline; }
+  .pb-inline dt { color: var(--text-muted); font-weight: 400; }
+  .pb-inline dd { margin: 0; font-weight: 700; }
+  .pb-age { color: var(--text-muted); font-weight: 400; }
+
+  .pb-flags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pb-flag {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 4px 9px;
+    line-height: 1.25;
+  }
+  .pb-flag--alert { background: #f6d7d2; color: #942514; }
+  .pb-flag--info { background: #d2e2f1; color: #003078; }
+
+  .pb-toggle {
+    position: absolute;
+    top: 14px;
+    right: 30px;
+    background: transparent;
+    border: 0;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--blue);
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+    text-decoration: underline; text-underline-offset: 3px;
+    line-height: 1.25;
+  }
+  .pb-toggle:hover { text-decoration-thickness: 2px; color: var(--blue-dark); background: transparent; }
+  .pb-toggle-chev { transition: transform 0.15s ease; display: block; flex: none; }
+  .patient-banner.is-expanded .pb-toggle-chev { transform: rotate(180deg); }
+
+  .patient-banner.is-expanded .pb-details { display: block; }
+  .pb-details {
+    display: none;
+    padding: 0 0 20px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-grey);
+  }
+  .pb-details[hidden] { display: none; }
+  .patient-banner.is-expanded .pb-details[hidden] { display: block; }
+
+  .pb-details-grid {
+    padding-top: 18px;
+    display: grid; gap: 24px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .pb-detail-block { font-size: 17px; }
+  .pb-detail-heading {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin: 0 0 10px;
+  }
+  .pb-stacked { margin: 0; }
+  .pb-stacked > div { padding: 4px 0; display: flex; gap: 10px; align-items: baseline; }
+  .pb-stacked dt { color: var(--text-muted); min-width: 110px; font-weight: 400; flex: none; }
+  .pb-stacked dd { margin: 0; font-weight: 700; }
+  .pb-alerts { margin: 0; padding-left: 18px; }
+  .pb-alerts li { padding: 3px 0; }
+
+  /* ---------- Main container ---------- */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+  }
+
+  /* ---------- Page layout ---------- */
+  .main-content { padding: 30px 0 60px; }
+
+  /* ---------- Breadcrumbs ---------- */
+  .breadcrumbs {
+    padding: 20px 0 0;
+    font-size: 16px;
+  }
+  .breadcrumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0; }
+  .breadcrumbs li { padding-right: 18px; position: relative; }
+  .breadcrumbs li:not(:last-child)::after {
+    content: ""; position: absolute; right: 4px; top: 50%;
+    width: 7px; height: 7px;
+    border-right: 1px solid var(--text-muted); border-top: 1px solid var(--text-muted);
+    transform: translateY(-50%) rotate(45deg);
+  }
+  .breadcrumbs a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+  .breadcrumbs li:last-child { color: var(--text-muted); }
+
+  /* ---------- Page heading ---------- */
+  .page-heading {
+    display: flex; align-items: baseline; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;
+  }
+  .page-heading .caption {
+    display: block;
+    font-size: 19px; color: var(--text-muted); font-weight: 400;
+    margin-bottom: 5px;
+  }
+  .page-heading h2 {
+    margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  .page-heading .actions { margin-left: auto; display: flex; gap: 10px; flex-wrap: wrap; }
+
+  /* ---------- GDS-style buttons ---------- */
+  .button {
+    display: inline-block;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1;
+    padding: 13px 16px 12px;
+    background: var(--action);
+    color: #fff;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 0 var(--action-shadow);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .button:hover { background: var(--action-hover); }
+  .button:active { box-shadow: none; transform: translateY(2px); }
+  .button.secondary {
+    background: var(--bg-grey);
+    color: var(--black);
+    box-shadow: 0 2px 0 #929191;
+  }
+  .button.secondary:hover { background: #dbdad9; }
+
+  /* ---------- Back link (GDS pattern) ---------- */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px;
+    color: var(--blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    margin-bottom: 24px;
+  }
+  .back-link:hover { text-decoration-thickness: 3px; color: var(--blue-dark); }
+  .back-link svg { flex: none; }
+
+  /* ---------- Find patient inline search ---------- */
+  .find-page {
+    max-width: 900px;
+  }
+
+  .find-search__label {
+    display: block;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .find-search__hint {
+    display: block;
+    font-size: 17px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    margin-top: -4px;
+  }
+  .find-search__input-wrap {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .find-search__icon {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  .find-search__input {
+    flex: 1;
+    font: inherit;
+    font-size: 19px;
+    padding: 10px 12px 10px 44px;
+    border: 2px solid var(--text);
+    background: #fff;
+    box-sizing: border-box;
+  }
+  .find-search__input:focus {
+    outline: 3px solid var(--focus);
+    outline-offset: 0;
+    box-shadow: inset 0 0 0 2px var(--text);
+  }
+  .find-search__submit {
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 19px;
+    padding: 10px 20px 9px;
+    background: var(--action);
+    color: #fff;
+    border: 2px solid transparent;
+    box-shadow: 0 2px 0 var(--action-shadow);
+    cursor: pointer;
+    flex: none;
+    white-space: nowrap;
+  }
+  .find-search__submit:hover { background: var(--action-hover); }
+
+  .find-search__chips {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .chip {
+    font: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--blue);
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .chip:hover { background: var(--bg-grey); }
+  .chip--active {
+    background: var(--text);
+    color: #fff;
+    border-color: var(--text);
+  }
+  .chip--icon { color: var(--text-muted); }
+
+  /* ---------- Find results ---------- */
+  .find-results { margin-top: 30px; }
+  .find-results__meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 16px; color: var(--text-muted);
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .find-results__meta strong { color: var(--text); font-weight: 700; }
+  .find-results__sort a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+
+  .find-results__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 17px;
+  }
+  .find-results__table th, .find-results__table td {
+    text-align: left;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .find-results__table thead th {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    font-weight: 700;
+    border-bottom: 2px solid var(--border);
+    padding: 9px 16px;
+    background: var(--bg-grey);
+  }
+  .find-results__row { cursor: pointer; }
+  .find-results__row:hover { background: var(--bg-grey); }
+  .find-results__row--highlight { background: #eaf3fa; }
+  .find-results__row--highlight:hover { background: #d9e9f5; }
+  .find-results__table .mono {
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 15px;
+  }
+  .find-results__table .muted { color: var(--text-muted); font-weight: 400; }
+  .find-results__table .row-action {
+    color: var(--blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ---------- Register prompt ---------- */
+  .register-prompt {
+    margin-top: 30px;
+    padding: 20px;
+    border-left: 10px solid var(--border);
+    font-size: 18px;
+  }
+  .register-prompt p { margin: 0 0 12px; }
+  .register-prompt p:last-child { margin: 0; }
+
+  /* ---------- Footer ---------- */
+  footer.gov-footer {
+    background: var(--bg-grey);
+    border-top: 1px solid #a1acb2;
+    padding: 25px 0;
+    margin-top: 60px;
+    font-size: 16px;
+    color: var(--text-muted);
+  }
+  footer .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 30px; }
+  footer a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ---------- Hide quick-launch labels early ---------- */
+  @media (max-width: 1180px) {
+    .quick-launch a span { display: none; }
+    .quick-launch a { padding: 8px 10px; }
+  }
+
+  /* ---------- Tablet ---------- */
+  @media (max-width: 1024px) {
+    body { font-size: 18px; }
+    .pb-name { font-size: 20px; }
+    .pb-inline { font-size: 16px; gap: 4px 20px; }
+    .pb-details-grid { grid-template-columns: repeat(2, 1fr); }
+    .page-heading h2 { font-size: 28px; }
+    .modules-panel-inner { grid-template-columns: repeat(2, 1fr); gap: 24px; padding: 20px 30px; }
+    .find-results__table { font-size: 16px; }
+  }
+
+  /* ---------- Phone ---------- */
+  @media (max-width: 640px) {
+    body { font-size: 16px; line-height: 1.5; }
+    .container, .gov-header-inner, .patient-banner-inner, .modules-panel-inner, footer .footer-inner { padding: 0 15px; }
+    .gov-header-inner { padding: 8px 15px; }
+    .gov-header .session-info { font-size: 14px; gap: 12px; }
+    .gov-header .session-info .hide-mobile { display: none; }
+    .quick-launch a span { display: none; }
+    .quick-launch a { padding: 6px 8px; }
+    .modules-btn span { display: none; }
+    .modules-btn { padding: 6px 8px; }
+    .gov-logo { font-size: 16px; }
+    .gov-logo .crown { width: 22px; height: 22px; font-size: 12px; }
+    .modules-panel-inner { grid-template-columns: 1fr; gap: 20px; padding: 16px 15px 20px; }
+    .modules-panel.is-open { max-height: 80vh; overflow-y: auto; }
+    .pb-summary { padding: 10px 0; gap: 10px 16px; }
+    .pb-name { font-size: 18px; width: 100%; }
+    .pb-inline { font-size: 15px; gap: 2px 16px; width: 100%; }
+    .pb-flags { width: 100%; }
+    .pb-toggle { position: static; margin-left: 0; font-size: 16px; padding: 0; }
+    .pb-details-grid { grid-template-columns: 1fr; gap: 16px; padding-top: 14px; }
+    .pb-detail-block { font-size: 15px; }
+    .pb-stacked dt { min-width: 90px; }
+    .page-heading h2 { font-size: 24px; }
+    .page-heading .actions { width: 100%; margin-left: 0; }
+    .find-search__input-wrap { flex-direction: column; gap: 8px; }
+    .find-search__submit { width: 100%; text-align: center; }
+    .find-results__table th, .find-results__table td { padding: 10px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== GOV-style header ========== -->
+<header class="gov-header" role="banner">
+  <div class="gov-header-inner">
+    <a class="gov-logo" href="#">
+      <span class="crown">+</span> ClearCare EHR
+    </a>
+    <button class="modules-btn" id="modulesBtn" aria-label="Open modules menu" aria-expanded="false" aria-controls="modulesPanel" onclick="
+      var p=document.getElementById('modulesPanel'), b=this;
+      var open=!p.classList.contains('is-open');
+      p.classList.toggle('is-open', open);
+      b.setAttribute('aria-expanded', open);
+      b.classList.toggle('is-open', open);
+    ">
+      <svg class="modules-btn__icon modules-btn__icon--menu" width="18" height="14" viewBox="0 0 18 14" aria-hidden="true">
+        <path d="M0 1h18M0 7h18M0 13h18" stroke="currentColor" stroke-width="2"/>
+      </svg>
+      <svg class="modules-btn__icon modules-btn__icon--close" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+        <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <span>Modules</span>
+    </button>
+    <nav class="quick-launch" aria-label="Quick actions">
+      <a href="#" class="is-active" title="Find patient" aria-label="Find patient" aria-current="page">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.5" cy="7.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M11.5 11.5L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>Find</span>
+      </a>
+      <a href="#" title="Today's appointments" aria-label="Appointments">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="3" width="16" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M1 7h16M5 1v4M13 1v4" stroke="currentColor" stroke-width="2"/></svg>
+        <span>Today</span>
+      </a>
+      <a href="#" title="My tasks" aria-label="Tasks">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="2" width="14" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 9l3 3 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>Tasks <em class="ql-badge">3</em></span>
+      </a>
+      <a href="#" title="Inbox" aria-label="Inbox">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="3" width="16" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M1 4l8 6 8-6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <span>Inbox</span>
+      </a>
+    </nav>
+    <div class="spacer"></div>
+    <div class="session-info">
+      <span class="hide-mobile">MWANGI, A. (Dr) — Nkubu HC</span>
+      <a href="#">Sign out</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Modules dropdown panel ===== -->
+<div class="modules-panel" id="modulesPanel" role="region" aria-labelledby="modulesBtn">
+  <div class="modules-panel-inner">
+    <div class="modules-group">
+      <h3 class="modules-group-heading">Patients</h3>
+      <ul>
+        <li><a href="#">Find patient</a></li>
+        <li><a href="#">Register patient</a></li>
+      </ul>
+    </div>
+    <div class="modules-group">
+      <h3 class="modules-group-heading">Clinic</h3>
+      <ul>
+        <li><a href="#">Appointments</a></li>
+        <li><a href="#">Workflow &amp; tasks <span class="badge">5</span></a></li>
+        <li><a href="#">Reporting</a></li>
+      </ul>
+    </div>
+    <div class="modules-group">
+      <h3 class="modules-group-heading">Administration</h3>
+      <ul>
+        <li><a href="#">Users</a></li>
+        <li><a href="#">Organisations</a></li>
+        <li><a href="#">Locations</a></li>
+        <li><a href="#">Comms links</a></li>
+        <li><a href="#">Coding</a></li>
+      </ul>
+    </div>
+    <div class="modules-group">
+      <h3 class="modules-group-heading">System tools</h3>
+      <ul>
+        <li><a href="#">Audit log</a></li>
+        <li><a href="#">Batch edit</a></li>
+        <li><a href="#">Patient merge</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Patient banner (sticky, collapsible) — previous patient remains in context ===== -->
+<section class="patient-banner" id="patientBanner" aria-labelledby="patient-name">
+  <div class="patient-banner-inner">
+    <div class="pb-summary">
+      <h1 id="patient-name" class="pb-name">WANJIRU, Grace <span class="pb-title">(Mrs)</span></h1>
+      <dl class="pb-inline">
+        <div class="item"><dt>Born</dt><dd>14-Mar-1992 <span class="pb-age">(34 yrs)</span></dd></div>
+        <div class="item"><dt>MRN</dt><dd>NKB-0049213</dd></div>
+        <div class="item"><dt>Sex</dt><dd>Female</dd></div>
+      </dl>
+      <div class="pb-flags">
+        <span class="pb-flag pb-flag--alert" title="Penicillin allergy">⚠ Allergy</span>
+        <span class="pb-flag pb-flag--info" title="Pregnant, 28 weeks">● Pregnant</span>
+      </div>
+      <button type="button" class="pb-toggle" aria-expanded="false" aria-controls="pbDetails" onclick="
+        var b=this, p=document.getElementById('patientBanner'), d=document.getElementById('pbDetails');
+        var open=p.classList.toggle('is-expanded');
+        b.setAttribute('aria-expanded', open);
+        if (open) { d.removeAttribute('hidden'); } else { d.setAttribute('hidden',''); }
+        b.querySelector('.pb-toggle-label').textContent = open ? 'Less' : 'More';
+      ">
+        <span class="pb-toggle-label">More</span>
+        <svg class="pb-toggle-chev" aria-hidden="true" width="10" height="6" viewBox="0 0 10 6" fill="none">
+          <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="pb-details" id="pbDetails" hidden>
+      <div class="pb-details-grid">
+        <div class="pb-detail-block">
+          <h3 class="pb-detail-heading">Contact</h3>
+          <dl class="pb-stacked">
+            <div><dt>Phone</dt><dd>+254 712 345 689</dd></div>
+            <div><dt>Alt. phone</dt><dd>+254 720 998 102 (husband)</dd></div>
+            <div><dt>Address</dt><dd>P.O. Box 42, Nkubu Town<br>Meru County, Kenya</dd></div>
+            <div><dt>Next of kin</dt><dd>MUTHOMI, J. (Mr) · husband · +254 720 998 102</dd></div>
+          </dl>
+        </div>
+        <div class="pb-detail-block">
+          <h3 class="pb-detail-heading">Demographics</h3>
+          <dl class="pb-stacked">
+            <div><dt>Blood group</dt><dd>O Rh+</dd></div>
+            <div><dt>Marital status</dt><dd>Married</dd></div>
+            <div><dt>Occupation</dt><dd>Schoolteacher</dd></div>
+            <div><dt>Preferred language</dt><dd>English, Kiswahili</dd></div>
+          </dl>
+        </div>
+        <div class="pb-detail-block">
+          <h3 class="pb-detail-heading">Clinical alerts</h3>
+          <ul class="pb-alerts">
+            <li><strong>Penicillin allergy</strong> — severe (urticaria, swelling). Confirmed 2023.</li>
+            <li><strong>Pregnant — 28 weeks</strong>, G3 P2. EDD 18-Aug-2026.</li>
+            <li>Last seen: 18-May-2026 — antenatal review.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Main content: Find Patient inline page ===== -->
+<div class="container">
+  <main class="main-content" id="main-content">
+
+    <!-- Back link to previous patient -->
+    <a href="#" class="back-link">
+      <svg width="8" height="13" viewBox="0 0 8 13" aria-hidden="true" fill="none">
+        <path d="M7 1L1 6.5L7 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Return to Grace Wanjiru's record
+    </a>
+
+    <div class="page-heading">
+      <div>
+        <h2>Find patient</h2>
+      </div>
+    </div>
+
+    <div class="find-page">
+
+      <!-- Search input -->
+      <div class="find-search">
+        <label for="findSearchInput" class="find-search__label">Search by name, MRN, phone or date of birth</label>
+        <span class="find-search__hint" id="findSearchHint">For example: Wanjiru, NKB-0049213, +254 712, or 14-Mar-1992</span>
+        <div class="find-search__input-wrap">
+          <svg class="find-search__icon" width="22" height="22" viewBox="0 0 20 20" aria-hidden="true">
+            <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2.2"/>
+            <path d="M13 13l5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+          <input
+            type="search"
+            id="findSearchInput"
+            class="find-search__input"
+            placeholder=""
+            value="wanj"
+            aria-describedby="findSearchHint"
+            autofocus
+          >
+          <button type="submit" class="find-search__submit">Search</button>
+        </div>
+
+        <div class="find-search__chips" role="group" aria-label="Quick filters">
+          <button type="button" class="chip chip--active">All patients</button>
+          <button type="button" class="chip">Recent</button>
+          <button type="button" class="chip">My patients</button>
+          <button type="button" class="chip">Today's appointments</button>
+          <button type="button" class="chip chip--icon">
+            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 4h12M3 7h8M5 10h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            More filters
+          </button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="find-results" aria-live="polite" aria-atomic="false">
+        <div class="find-results__meta">
+          <span><strong>4</strong> patients matching "wanj"</span>
+          <span class="find-results__sort">
+            Sorted by: <a href="#">Last seen ↓</a>
+          </span>
+        </div>
+        <table class="find-results__table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">MRN</th>
+              <th scope="col">Date of birth</th>
+              <th scope="col">Sex</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Last seen</th>
+              <th scope="col" aria-label="Actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="find-results__row find-results__row--highlight">
+              <th scope="row"><strong>WANJIRU, Grace</strong> <span class="muted">(Mrs)</span></th>
+              <td class="mono">NKB-0049213</td>
+              <td class="mono">14-Mar-1992</td>
+              <td>F</td>
+              <td class="mono">+254 712 ••• •89</td>
+              <td>18-May-2026</td>
+              <td><a href="#" class="row-action">Open record</a></td>
+            </tr>
+            <tr class="find-results__row">
+              <th scope="row">WANJIKU, Mary</th>
+              <td class="mono">NKB-0038104</td>
+              <td class="mono">22-Jul-1978</td>
+              <td>F</td>
+              <td class="mono">+254 720 ••• •42</td>
+              <td>03-May-2026</td>
+              <td><a href="#" class="row-action">Open record</a></td>
+            </tr>
+            <tr class="find-results__row">
+              <th scope="row">WANJALA, Peter</th>
+              <td class="mono">NKB-0041923</td>
+              <td class="mono">09-Nov-1965</td>
+              <td>M</td>
+              <td class="mono">+254 733 ••• •11</td>
+              <td>21-Apr-2026</td>
+              <td><a href="#" class="row-action">Open record</a></td>
+            </tr>
+            <tr class="find-results__row">
+              <th scope="row">WANJIRU, Faith</th>
+              <td class="mono">NKB-0029740</td>
+              <td class="mono">04-Feb-2014</td>
+              <td>F</td>
+              <td class="mono">+254 711 ••• •76</td>
+              <td>15-Jan-2026</td>
+              <td><a href="#" class="row-action">Open record</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Register prompt -->
+      <div class="register-prompt">
+        <p>Can't find who you're looking for?</p>
+        <a href="#" class="button secondary">Register a new patient</a>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<footer class="gov-footer">
+  <div class="footer-inner">
+    ClearCare EHR · Open-source patient record for low-resource clinics ·
+    <a href="#">Help</a> · <a href="#">Accessibility</a> · <a href="#">Privacy</a>
+  </div>
+</footer>
+
+<script>
+  // Recompute sticky offsets
+  (function () {
+    var root = document.documentElement;
+    var govHeader = document.querySelector('.gov-header');
+    var patientBanner = document.querySelector('.patient-banner');
+    function setOffsets() {
+      if (!govHeader) return;
+      var govH = govHeader.offsetHeight;
+      root.style.setProperty('--gov-header-h', govH + 'px');
+      root.style.setProperty('--header-total-h', govH + 'px');
+      if (patientBanner) {
+        var bannerH = patientBanner.offsetHeight;
+        root.style.setProperty('--patient-banner-stack-h', (govH + bannerH) + 'px');
+      }
+    }
+    setOffsets();
+    window.addEventListener('resize', setOffsets);
+    window.addEventListener('load', setOffsets);
+    var pb = document.getElementById('patientBanner');
+    if (pb) {
+      var observer = new MutationObserver(setOffsets);
+      observer.observe(pb, { attributes: true, attributeFilter: ['class'] });
+    }
+  })();
+
+  // Modules panel: close on outside click or Escape
+  (function () {
+    var btn = document.getElementById('modulesBtn');
+    var panel = document.getElementById('modulesPanel');
+    if (!btn || !panel) return;
+    function close() {
+      panel.classList.remove('is-open');
+      btn.classList.remove('is-open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    document.addEventListener('click', function (e) {
+      if (!panel.classList.contains('is-open')) return;
+      if (panel.contains(e.target) || btn.contains(e.target)) return;
+      close();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') close();
+    });
+  })();
+
+  // Filter chips toggle
+  (function () {
+    var chips = document.querySelectorAll('.find-search__chips .chip:not(.chip--icon)');
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chips.forEach(function (c) { c.classList.remove('chip--active'); });
+        chip.classList.add('chip--active');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
